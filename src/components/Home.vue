@@ -7,7 +7,7 @@
         <router-link to="/users">/users</router-link>
       </li>
       <li>
-        <router-link to="/users">/users/add</router-link>
+        <router-link to="/users/add">/users/add</router-link>
       </li>
     </ul>
   </div>
@@ -15,8 +15,8 @@
 
 <script>
 export default {
-  name: 'HelloWorld'
-}
+  name: "HelloWorld"
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

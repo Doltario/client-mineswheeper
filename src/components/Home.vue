@@ -10,12 +10,21 @@
         <router-link to="/users/add">/users/add</router-link>
       </li>
     </ul>
+    <div>
+      <h2>This is a grid</h2>
+      <pre>{{ gameGrid }}</pre>
+    </div>
   </div>
 </template>
 
 <script>
+import { MinesWheeper } from "@services/MinesWheeper.js";
 export default {
-  name: "HelloWorld"
+  data() {
+    return {
+      gameGrid: new MinesWheeper()
+    };
+  }
 };
 </script>
 

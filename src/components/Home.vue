@@ -12,14 +12,21 @@
     </ul>
     <div>
       <h2>This is a grid</h2>
-      <pre>{{ gameGrid }}</pre>
+      <!-- <pre>{{ gameGrid }}</pre> -->
+      <Grid :gameGrid="gameGrid"/>
     </div>
   </div>
 </template>
 
 <script>
 import { MinesWheeper } from "@services/MinesWheeper.js";
+
+import Grid from "@components/Grid.vue";
+
 export default {
+  components: {
+    Grid
+  },
   data() {
     return {
       gameGrid: new MinesWheeper()
@@ -29,4 +36,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped lang="scss"></style>

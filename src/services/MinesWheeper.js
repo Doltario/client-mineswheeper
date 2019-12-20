@@ -9,13 +9,14 @@ class MinesWheeper {
     this._bombsLeft = bombsNumber
     this._grid = []
     this.generateGrid()
+    delete this._bombsLeft // Used only for generation
   }
 
   _fillGrid() {
     this._grid.forEach((caseItem, index) => {
       if (caseItem.hasBomb == null) {
         let r = Math.random()
-        if (r < 0.5 && this._bombleft > 0) {
+        if (r < 0.5 && this._bombsLeft > 0) {
           this._grid[index].hasBomb = true
           this._bombsLeft--
         }

@@ -2,8 +2,8 @@
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div class="grid-container">
     <div class="grid-content" :style="`width: ${20 * gameGrid.width }px`">
-      <div v-for="gridCase in gameGrid.grid" v-bind:key="gridCase.id" class="case">
-        <div v-if="gridCase.hasBomb === true">
+      <div v-for="gridBox in gameGrid.grid" v-bind:key="gridBox.id" class="box">
+        <div v-if="gridBox.hasBomb === true">
           T
         </div>
       </div>
@@ -30,7 +30,7 @@ export default {
       display: flex;
       flex-wrap: wrap;
 
-      .case {
+      .box {
         height: 20px;
         width: 20px;
         background-color: lightgrey;

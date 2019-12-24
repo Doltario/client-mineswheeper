@@ -33,9 +33,7 @@ class Box {
     return this._revealed
   }
 
-  get nearBombs() {
-    console.log(this._neighbors);
-    
+  get nearBombs() {  
     return this._neighbors.filter((neighbor) => {
       return neighbor.hasBomb
     }).length

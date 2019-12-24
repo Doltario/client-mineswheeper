@@ -12,8 +12,7 @@
     </ul>
     <div>
       <h2>This is a grid</h2>
-      <!-- <pre>{{ gameGrid }}</pre> -->
-      <Grid :gameGrid="gameGrid"/>
+      <Grid :grid="game.grid"/>
     </div>
   </div>
 </template>
@@ -29,7 +28,7 @@ export default {
   },
   data() {
     return {
-      gameGrid: new MinesWheeper()
+      game: new MinesWheeper()
     };
   }
 };

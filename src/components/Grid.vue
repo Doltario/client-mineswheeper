@@ -6,9 +6,12 @@
         <div v-if="gridBox.hasBomb === true">
           T
         </div>
+        <div v-if="gridBox.hasBomb === null">
+          {{gridBox.nearBombs}}
+        </div>
       </div>
     </div>
-    <pre>{{ gameGrid }}</pre>  
+    <pre>{{ gameGrid.print() }}</pre>  
   </div>
 </template>
 

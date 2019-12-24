@@ -1,5 +1,6 @@
 // TODO: Will  handle in-progress saves ? how rebuild a grid with stored data ? => save the "state" of the grid
 import { Box } from '@services/Box.js'
+import { deepClone } from '@utils/deepClone.js'
 
 class MinesWheeper {
   constructor(width = 5, height = 5, bombsNumber = 10) {
@@ -34,21 +35,21 @@ class MinesWheeper {
     return this
   }
 
-  _writeCase(hasBomb) {
+  _writeBox(hasBomb) {
     this._grid.push(new Box(hasBomb))
     return this
   }
 
-  writeCase() {
+  writeBox() {
     let r = Math.random()
     if (r < 0.3 && this._bombsLeft > 0) {
-      this._writeCase(true)
+      this._writeBox(true)
       this._bombsLeft--
     } else if (0.3 < r < 0.6 && this._bombsLeft > 0) {
-      this._writeCase(false)
+      this._writeBox(false) // felix@TODO: ?? does it even work ? It seems that no box has hasBomb set to false, only true or null
       this._bombsLeft--
     } else {
-      this._writeCase(null)
+      this._writeBox(null)
     }
     return this
   }
@@ -61,14 +62,14 @@ class MinesWheeper {
 
   _computeNeighbors() { // felix@TODO: This is problably not the best way, but this is the simplest way I see for now
     this._grid.forEach((box) => {
-      box._neighbors[0] = box.index - this._width -1
-      box._neighbors[1] = box.index - this._width
-      box._neighbors[2] = box.index - this._width + 1
-      box._neighbors[3] = box.index - 1
-      box._neighbors[4] = box.index + 1
-      box._neighbors[5] = box.index + this._width - 1
-      box._neighbors[6] = box.index + this._width
-      box._neighbors[7] = box.index + this._width + 1
+      box._neighbors[0] = this.findBox(box.index - this._width -1)
+      box._neighbors[1] = this.findBox(box.index - this._width)
+      box._neighbors[2] = this.findBox(box.index - this._width + 1)
+      box._neighbors[3] = this.findBox(box.index - 1)
+      box._neighbors[4] = this.findBox(box.index + 1)
+      box._neighbors[5] = this.findBox(box.index + this._width - 1)
+      box._neighbors[6] = this.findBox(box.index + this._width)
+      box._neighbors[7] = this.findBox(box.index + this._width + 1)
 
       if (box.index % this._width === 0) { // Is left
         box._neighbors[0] = null
@@ -88,7 +89,7 @@ class MinesWheeper {
         box._neighbors[7] = null
       }
 
-      if (box.index <= this._width) { // Is top
+      if (box.index < this._width) { // Is top
         box._neighbors[0] = null
         box._neighbors[1] = null
         box._neighbors[2] = null
@@ -101,9 +102,9 @@ class MinesWheeper {
     })
   }
 
-  findCase(boxIndex) {
-    if (!boxIndex || typeof boxIndex !== 'number') {
-      throw new Error (`First parameter of findCase() must be a number, ${typeof boxIndex} given`)
+  findBox(boxIndex) {
+    if (boxIndex === undefined || boxIndex === null || typeof boxIndex !== 'number') {
+      throw new Error (`First parameter of findBox() must be a number, ${typeof boxIndex} given`)
     }
 
     return this._grid.filter((box) => {
@@ -113,13 +114,23 @@ class MinesWheeper {
 
   generateGrid() {
     for (let i = 0; i < this._boxesNumber; i++) {
-      this.writeCase()
+      this.writeBox()
     }
 
     this.fillGrid()
 
     this._assignIndexes()
     this._computeNeighbors()
+  }
+
+  print() {
+    const mineWheeperCopy = deepClone(this)
+    mineWheeperCopy._grid.map((box) => {
+      box._neighbors = box._neighbors.map((neighbor) => {
+        return neighbor.index
+      })
+    })
+    return mineWheeperCopy
   }
 
   get grid() {

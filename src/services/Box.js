@@ -9,6 +9,10 @@ class Box {
     this._index = null 
   }
 
+  reveal() {
+    this._revealed = true
+  }
+
   get hasBomb () {
     return this._hasBomb
   }
@@ -23,6 +27,18 @@ class Box {
 
   set index(index) { // felix@TODO: must be a number
     return this._index = index
+  }
+
+  get revealed() {
+    return this._revealed
+  }
+
+  get nearBombs() {
+    console.log(this._neighbors);
+    
+    return this._neighbors.filter((neighbor) => {
+      return neighbor.hasBomb
+    }).length
   }
 }
 

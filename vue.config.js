@@ -9,5 +9,9 @@ module.exports = {
       '@services',
       path.resolve(__dirname, 'src', 'services')
     )
+    config.resolve.alias.set(
+      '@utils',
+      path.resolve(__dirname, 'src', 'utils')
+    )
   }
 }

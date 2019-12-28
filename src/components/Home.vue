@@ -12,26 +12,28 @@
     </ul>
     <div>
       <h2>This is a grid</h2>
-      <Grid :grid="game.grid"/>
+      <Grid :grid="game.grid" />
     </div>
   </div>
 </template>
 
 <script>
-import { MinesWheeper } from "@services/MinesWheeper.js";
+import { MinesWheeper } from '@services/MinesWheeper.js'
 
-import Grid from "@components/Grid.vue";
+import Grid from '@components/Grid.vue'
 
 export default {
   components: {
     Grid
   },
   data() {
+    const game = new MinesWheeper(30, 30, 40)
+    Object.freeze(game)
     return {
-      game: new MinesWheeper()
-    };
+      game
+    }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -8,8 +8,9 @@ class MinesWheeper {
   }
 
   print() {
+    // felix@TODO: doesn't work anymore, callstack size is too big
     const mineWheeperCopy = deepClone(this)
-    
+
     mineWheeperCopy._grid._boxes = mineWheeperCopy._grid.print()
 
     return mineWheeperCopy
@@ -18,7 +19,6 @@ class MinesWheeper {
   get grid() {
     return this._grid
   }
-
 }
 
 export { MinesWheeper }

@@ -1,9 +1,6 @@
 class Box {
   constructor(hasBomb = false) {
     this._neighbors = []
-    // 0 1 2
-    // 3 X 4
-    // 5 6 7
     this._isRevealed = false
     this._hasBomb = hasBomb
     this._index = null
@@ -45,12 +42,11 @@ class Box {
     if (this._isRevealed) return
 
     this._isRevealed = true
-    console.log('revealing', this.index, this)
 
     if (this.hasBomb) {
-      console.log('GAME OVER, NOOB')
+      console.log('Game over')
     } else if (this.nearBombs === 0) {
-      console.log('wesh')
+      // console.log('wesh')
       this._neighbors.forEach(neighbor => {
         neighbor.reveal()
       })

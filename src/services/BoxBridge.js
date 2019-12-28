@@ -14,9 +14,22 @@ class BoxBridge {
   }
 
   _linkBoxes(currentBox, boxToLink) {
+    // Used Object.defineProperty() to workaround vue error 'Maximum callstack size" when applying reactivity
+    // https://stackoverflow.com/questions/59509529/vue-reactivity-on-object-graph-containing-cyclic-references
+    const opts = {
+      configurable: false,
+      enumerable: true,
+      writable: true
+    }
     if (currentBox && boxToLink) {
-      currentBox._neighbors.push(boxToLink)
-      boxToLink._neighbors.push(currentBox)
+      Object.defineProperty(currentBox, '_neighbors', {
+        ...opts,
+        value: currentBox._neighbors ? currentBox._neighbors.concat([boxToLink]) : [boxToLink]
+      })
+      Object.defineProperty(boxToLink, '_neighbors', {
+        ...opts,
+        value: boxToLink._neighbors ? boxToLink._neighbors.concat([currentBox]) : [currentBox]
+      })
     }
     return
   }

@@ -27,10 +27,8 @@ export default {
     Grid
   },
   data() {
-    const game = new MinesWheeper(30, 30, 40)
-    Object.freeze(game)
     return {
-      game
+      game: new MinesWheeper(30, 30, 40)
     }
   }
 }

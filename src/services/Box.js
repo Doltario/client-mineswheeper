@@ -46,7 +46,6 @@ class Box {
     if (this.hasBomb) {
       console.log('Game over')
     } else if (this.nearBombs === 0) {
-      // console.log('wesh')
       this._neighbors.forEach(neighbor => {
         neighbor.reveal()
       })

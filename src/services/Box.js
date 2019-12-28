@@ -4,14 +4,9 @@ class Box {
     // 0 1 2
     // 3 X 4
     // 5 6 7
-    this._revealed = false
+    this._isRevealed = false
     this._hasBomb = hasBomb
     this._index = null
-  }
-
-  reveal() {
-    this._revealed = true
-    console.log(this)
   }
 
   get hasBomb() {
@@ -36,14 +31,30 @@ class Box {
     return (this._index = index)
   }
 
-  get revealed() {
-    return this._revealed
+  get isRevealed() {
+    return this._isRevealed
   }
 
   get nearBombs() {
     return this._neighbors.filter(neighbor => {
       return neighbor && neighbor.hasBomb
     }).length
+  }
+
+  reveal() {
+    if (this._isRevealed) return
+
+    this._isRevealed = true
+    console.log('revealing', this.index, this)
+
+    if (this.hasBomb) {
+      console.log('GAME OVER, NOOB')
+    } else if (this.nearBombs === 0) {
+      console.log('wesh')
+      this._neighbors.forEach(neighbor => {
+        neighbor.reveal()
+      })
+    }
   }
 }
 

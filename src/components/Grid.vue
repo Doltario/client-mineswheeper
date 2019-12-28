@@ -1,12 +1,12 @@
 <template>
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div class="grid-container">
-      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" class="box">
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
-        <div v-if="gridBox.hasBomb === true">
+      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" :class="`box ${gridBox._isRevealed ? 'green' : ''}`" @click="gridBox.reveal()">
+        <div v-if="gridBox._isRevealed && gridBox.hasBomb === true">
           T
         </div>
-        <div v-if="gridBox.hasBomb === null">
+        <div v-if="gridBox._isRevealed && gridBox.hasBomb === null">
           {{ gridBox.nearBombs }}
         </div>
       </div>
@@ -41,6 +41,10 @@ export default {
       justify-content: center;
       align-content: center;
       cursor: pointer;
+    }
+
+    .green {
+      background-color: green;
     }
   }
 }

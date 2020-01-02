@@ -5,7 +5,8 @@ import { deepClone } from '@utils/deepClone.js'
 const boxBridge = new BoxBridge()
 
 class Grid {
-  constructor(width = 5, height = 5, bombsNumber = 10) {
+  constructor(width, height, bombsNumber) {
+    // felix@TODO: check params + check if width * height > bombsNumber
     this._width = width
     this._height = height
     this._boxesNumber = width * height

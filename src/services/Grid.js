@@ -1,6 +1,5 @@
 // TODO: Will  handle in-progress saves ? how rebuild a grid with stored data ? => save the "state" of the grid
 import { BoxBridge } from '@services/BoxBridge.js'
-import { deepClone } from '@utils/deepClone.js'
 
 const boxBridge = new BoxBridge()
 
@@ -77,17 +76,6 @@ class Grid {
       this._writeBox(null)
     }
     return this
-  }
-
-  print() {
-    const gridCopy = deepClone(this)
-
-    gridCopy.boxes.map(box => {
-      box._neighbors = box._neighbors.map(neighbor => {
-        return neighbor.index
-      })
-    })
-    return gridCopy
   }
 
   generate() {

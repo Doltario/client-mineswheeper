@@ -3,6 +3,7 @@ class Box {
     this._neighbors = []
     this._isRevealed = false
     this._hasBomb = hasBomb
+    this._isFlagged = false
     this._index = null
   }
 
@@ -38,8 +39,12 @@ class Box {
     }).length
   }
 
+  toggleFlag() {
+    this._isFlagged = !this._isFlagged
+  }
+
   reveal() {
-    if (this._isRevealed) return
+    if (this._isRevealed || this._isFlagged) return
 
     this._isRevealed = true
 

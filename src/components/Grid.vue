@@ -2,13 +2,14 @@
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div class="grid-container">
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
-      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" class="box" @click="gridBox.reveal()">
+      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" class="box" @click="gridBox.reveal()" @contextmenu.prevent="gridBox.toggleFlag()">
         <div v-if="gridBox._isRevealed && gridBox.hasBomb === true" :class="`${gridBox._isRevealed ? 'red' : ''}`">
           T
         </div>
         <div v-if="gridBox._isRevealed && gridBox.hasBomb === null" :class="`${gridBox._isRevealed ? 'green' : ''}`">
           {{ gridBox.nearBombs }}
         </div>
+        <div v-if="gridBox._isFlagged" class="orange"></div>
       </div>
     </div>
     <br />
@@ -56,8 +57,15 @@ export default {
       width: 100%;
       text-align: center;
     }
+
     .red {
       background-color: red;
+      width: 100%;
+      text-align: center;
+    }
+
+    .orange {
+      background-color: orange;
       width: 100%;
       text-align: center;
     }

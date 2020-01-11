@@ -10,10 +10,10 @@ class Grid {
     this._height = height
     this._boxesNumber = width * height
     this._bombsNumber = bombsNumber
-    this._bombsLeft = bombsNumber
+    this._bombsToInsert = bombsNumber
     this._boxes = []
     this.generate()
-    delete this._bombsLeft // Used only for generation
+    delete this._bombsToInsert // Used only for generation
   }
 
   get height() {
@@ -42,9 +42,9 @@ class Grid {
     for (let i = 0; i < this._boxes.length; i++) {
       if (this._boxes[i].hasBomb == null) {
         let r = Math.random()
-        if (r < 0.5 && this._bombsLeft > 0) {
+        if (r < 0.5 && this._bombsToInsert > 0) {
           this._boxes[i].hasBomb = true
-          this._bombsLeft--
+          this._bombsToInsert--
         }
       }
     }
@@ -53,7 +53,7 @@ class Grid {
 
   fill() {
     // to fill grid if there are to few bombs
-    while (this._bombsLeft > 0) {
+    while (this._bombsToInsert > 0) {
       this._fill()
     }
     return this
@@ -66,12 +66,12 @@ class Grid {
 
   writeBox() {
     let r = Math.random()
-    if (r < 0.3 && this._bombsLeft > 0) {
+    if (r < 0.3 && this._bombsToInsert > 0) {
       this._writeBox(true)
-      this._bombsLeft--
-    } else if (0.3 < r < 0.6 && this._bombsLeft > 0) {
+      this._bombsToInsert--
+    } else if (0.3 < r < 0.6 && this._bombsToInsert > 0) {
       this._writeBox(false) // felix@TODO: ?? does it even work ? It seems that no box has hasBomb set to false, only true or null
-      this._bombsLeft--
+      this._bombsToInsert--
     } else {
       this._writeBox(null)
     }

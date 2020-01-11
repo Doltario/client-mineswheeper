@@ -39,6 +39,10 @@ class Box {
     }).length
   }
 
+  get isFlagged() {
+    return this._isFlagged
+  }
+
   toggleFlag() {
     this._isFlagged = !this._isFlagged
   }

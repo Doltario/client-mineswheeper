@@ -9,7 +9,7 @@
         <div v-if="gridBox._isRevealed && gridBox.hasBomb === null" :class="`${gridBox._isRevealed ? 'green' : ''}`">
           {{ gridBox.nearBombs }}
         </div>
-        <div v-if="gridBox._isFlagged" class="orange"></div>
+        <div v-if="gridBox.isFlagged" class="orange"></div>
       </div>
     </div>
     <br />

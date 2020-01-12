@@ -28,6 +28,31 @@ class Grid {
     return this._boxes
   }
 
+  get bombsLeft() {
+    return (
+      this._bombsNumber -
+      this._boxes.filter(box => {
+        return box.isFlagged
+      }).length
+    )
+  }
+
+  checkIfWon() {
+    if (this.bombsLeft === 0) {
+      const flaggedBombsNumber = this._boxes.filter(box => {
+        return box.hasBomb === true && box.isRevealed === false && box.isFlagged === true
+      }).length
+
+      const revealedBoxNumber = this._boxes.filter(box => {
+        return box.isRevealed === true
+      }).length
+
+      if (flaggedBombsNumber + revealedBoxNumber === this._boxesNumber) {
+        return console.log('WON')
+      }
+    }
+  }
+
   findBox(boxIndex) {
     if (boxIndex === undefined || boxIndex === null || typeof boxIndex !== 'number') {
       throw new Error(`First parameter of findBox() must be a number, ${typeof boxIndex} given`)

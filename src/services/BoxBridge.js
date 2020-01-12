@@ -84,7 +84,7 @@ class BoxBridge {
   }
 
   create(grid, hasBomb) {
-    let createdBox = new Box(hasBomb)
+    let createdBox = new Box(grid, hasBomb)
     createdBox.index = this._currentIndex
     this._currentIndex++
     this._computePosition(grid, createdBox)

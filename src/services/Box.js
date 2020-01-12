@@ -1,10 +1,11 @@
 class Box {
-  constructor(hasBomb = false) {
+  constructor(grid, hasBomb = false) {
     this._neighbors = []
     this._isRevealed = false
     this._hasBomb = hasBomb
     this._isFlagged = false
     this._index = null
+    this._parentGrid = grid
   }
 
   get hasBomb() {
@@ -45,6 +46,8 @@ class Box {
 
   toggleFlag() {
     this._isFlagged = !this._isFlagged
+
+    this._parentGrid.checkIfWon()
   }
 
   reveal() {
@@ -59,6 +62,7 @@ class Box {
         neighbor.reveal()
       })
     }
+    this._parentGrid.checkIfWon()
   }
 }
 

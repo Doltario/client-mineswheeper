@@ -1,16 +1,22 @@
 <template>
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div class="grid-container">
-    {{ grid.bombsLeft }}
+    <div>
+      {{ grid.bombsLeft }}
+      <span v-if="grid._gameWon === true">Win !</span>
+      <span v-if="grid._gameWon === false">Try again</span>
+    </div>
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
       <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" class="box" @click="gridBox.reveal()" @contextmenu.prevent="gridBox.toggleFlag()">
-        <div v-if="gridBox._isRevealed && gridBox.hasBomb === true" :class="`${gridBox._isRevealed ? 'red' : ''}`">
+        <div v-if="gridBox._isRevealed && gridBox.hasBomb === true && gridBox.isFlagged === false" class="bomb">
           T
         </div>
-        <div v-if="gridBox._isRevealed && gridBox.hasBomb === false" :class="`${gridBox._isRevealed ? 'green' : ''}`">
+        <div v-if="gridBox.isFlagged === true" class="flagged">
+          🇫🇷
+        </div>
+        <div v-if="gridBox._isRevealed && gridBox.hasBomb === false && gridBox.isFlagged === false" class="no-bomb">
           {{ gridBox.nearBombs }}
         </div>
-        <div v-if="gridBox.isFlagged" class="orange"></div>
       </div>
     </div>
     <br />
@@ -51,21 +57,22 @@ export default {
       justify-content: center;
       align-content: center;
       cursor: pointer;
+      user-select: none;
     }
 
-    .green {
+    .no-bomb {
       background-color: green;
       width: 100%;
       text-align: center;
     }
 
-    .red {
+    .bomb {
       background-color: red;
       width: 100%;
       text-align: center;
     }
 
-    .orange {
+    .flagged {
       background-color: orange;
       width: 100%;
       text-align: center;

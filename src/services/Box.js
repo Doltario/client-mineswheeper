@@ -45,18 +45,19 @@ class Box {
   }
 
   toggleFlag() {
+    if (this._parentGrid.gameIsEnded) return
+
     this._isFlagged = !this._isFlagged
 
     this._parentGrid.checkIfWon()
   }
 
   reveal() {
-    if (this._isRevealed || this._isFlagged) return
+    if (this._isRevealed || this._isFlagged || this._parentGrid.gameIsEnded) return
 
     this._isRevealed = true
-
     if (this.hasBomb) {
-      console.log('Game over')
+      this._parentGrid.gameOver()
     } else if (this.nearBombs === 0) {
       this._neighbors.forEach(neighbor => {
         neighbor.reveal()

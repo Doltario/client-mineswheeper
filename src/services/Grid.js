@@ -12,6 +12,8 @@ class Grid {
     this._bombsNumber = bombsNumber
     this._bombsToInsert = bombsNumber
     this._boxes = []
+    this._gameIsEnded = false
+    this._gameWon = null
     this.generate()
     delete this._bombsToInsert // Used only for generation
   }
@@ -37,6 +39,10 @@ class Grid {
     )
   }
 
+  get gameIsEnded() {
+    return this._gameIsEnded
+  }
+
   checkIfWon() {
     if (this.bombsLeft === 0) {
       const flaggedBombsNumber = this._boxes.filter(box => {
@@ -48,7 +54,7 @@ class Grid {
       }).length
 
       if (flaggedBombsNumber + revealedBoxNumber === this._boxesNumber) {
-        return console.log('WON')
+        this.gameWin()
       }
     }
   }
@@ -77,8 +83,29 @@ class Grid {
   }
 
   writeBox() {
-    this._boxes.push(boxBridge.create(this, false))
+    // TODO:writeBox should probably be in BoxBridge
+    this._boxes.push(boxBridge.create(this, false)) // TODO: perhaps remove second parameter of boxBridge.create
     return this
+  }
+
+  gameOver() {
+    this._gameIsEnded = true
+    this._gameWon = false
+    this._boxes.forEach(box => {
+      box._isRevealed = true
+    })
+  }
+
+  gameWin() {
+    this._gameIsEnded = true
+    this._gameWon = true
+    this._boxes.forEach(box => {
+      if (box.hasBomb === true && box.isFlagged === false) {
+        box.isFlagged = true
+      } else {
+        box._isRevealed = true
+      }
+    })
   }
 
   generate() {

@@ -7,14 +7,14 @@
         <div v-if="gridBox._isRevealed && gridBox.hasBomb === true" :class="`${gridBox._isRevealed ? 'red' : ''}`">
           T
         </div>
-        <div v-if="gridBox._isRevealed && gridBox.hasBomb === null" :class="`${gridBox._isRevealed ? 'green' : ''}`">
+        <div v-if="gridBox._isRevealed && gridBox.hasBomb === false" :class="`${gridBox._isRevealed ? 'green' : ''}`">
           {{ gridBox.nearBombs }}
         </div>
         <div v-if="gridBox.isFlagged" class="orange"></div>
       </div>
     </div>
     <br />
-    <div>{{ grid.boxes[4].print() }}</div>
+    <!-- <div>{{ grid.boxes[4].print() }}</div> -->
     <br />
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
       <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" class="box" @click="gridBox.reveal()">

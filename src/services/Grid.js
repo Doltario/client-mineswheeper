@@ -63,43 +63,21 @@ class Grid {
     })
   }
 
-  _fill() {
-    for (let i = 0; i < this._boxes.length; i++) {
-      if (this._boxes[i].hasBomb == null) {
-        let r = Math.random()
-        if (r < 0.5 && this._bombsToInsert > 0) {
-          this._boxes[i].hasBomb = true
-          this._bombsToInsert--
-        }
+  fill() {
+    // to fill grid if there are to few bombs
+    while (this._bombsToInsert > 0) {
+      const index = Math.trunc(Math.random() * this._height * this._width)
+
+      if (this._boxes[index].hasBomb !== true) {
+        this._boxes[index].hasBomb = true
+        this._bombsToInsert--
       }
     }
     return this
   }
 
-  fill() {
-    // to fill grid if there are to few bombs
-    while (this._bombsToInsert > 0) {
-      this._fill()
-    }
-    return this
-  }
-
-  _writeBox(hasBomb) {
-    this._boxes.push(boxBridge.create(this, hasBomb))
-    return this
-  }
-
   writeBox() {
-    let r = Math.random()
-    if (r < 0.3 && this._bombsToInsert > 0) {
-      this._writeBox(true)
-      this._bombsToInsert--
-    } else if (0.3 < r < 0.6 && this._bombsToInsert > 0) {
-      this._writeBox(false) // felix@TODO: ?? does it even work ? It seems that no box has hasBomb set to false, only true or null
-      this._bombsToInsert--
-    } else {
-      this._writeBox(null)
-    }
+    this._boxes.push(boxBridge.create(this, false))
     return this
   }
 
@@ -107,6 +85,7 @@ class Grid {
     for (let i = 0; i < this._boxesNumber; i++) {
       this.writeBox()
     }
+    this.fill()
   }
 }
 

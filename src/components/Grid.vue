@@ -15,7 +15,7 @@
           🇫🇷
         </div>
         <div v-if="gridBox.isRevealed && gridBox.hasBomb === false && gridBox.isFlagged === false" class="no-bomb">
-          {{ gridBox.nearBombs }}
+          {{ nearBombs(gridBox) }}
         </div>
       </div>
     </div>
@@ -31,22 +31,40 @@
 
 <script>
 export default {
-  props: ['grid'],
-  data() {
-    return {
-      bombsleft:
-        this.grid.bombsNumber -
-        this.grid.boxes.filter(box => {
+  computed: {
+    bombsleft: function() {
+      return (
+        this.$store.state.activeGame.activeGame.grid.bombsNumber -
+        this.$store.state.activeGame.activeGame.grid.boxes.filter(box => {
           return box.isFlagged
         }).length
+      )
+    }
+  },
+  data() {
+    return {
+      grid: this.$store.state.activeGame.activeGame.grid
     }
   },
   methods: {
-    reveal: () => {
-      console.log('TODO: reveal')
+    reveal: function(boxIndex) {
+      this.$store
+        .dispatch('reveal', boxIndex)
+        .then(() => {
+          // console.log(`Box ${boxIndex} revealed`, res)
+        })
+        .catch(error => {
+          console.error(`An error occured revealing box ${boxIndex}`, error)
+        })
     },
     toggleFlag: () => {
       console.log('TODO: toggleFlag')
+    },
+    nearBombs: function(gridBox) {
+      // TODO: Implemented several times, check if it is not possible to de-duplicate
+      return gridBox.neighbors.filter(boxIndex => {
+        return this.grid.boxes[boxIndex].hasBomb
+      }).length
     }
   }
 }

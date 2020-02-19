@@ -2,9 +2,9 @@
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div class="grid-container">
     <div>
-      {{ bombsleft }}
-      <!-- <span v-if="grid._gameWon === true">Win !</span>
-      <span v-if="grid._gameWon === false">Try again</span> -->
+      {{ bombsLeft }}
+      <span v-if="$store.state.activeGame.activeGame.won === true">Win !</span>
+      <span v-if="this.$store.state.activeGame.activeGame.won === false">Try again</span>
     </div>
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
       <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.index" class="box" @click="reveal(gridBox.index)" @contextmenu.prevent="toggleFlag(gridBox.index)">
@@ -32,7 +32,7 @@
 <script>
 export default {
   computed: {
-    bombsleft: function() {
+    bombsLeft: function() {
       return (
         this.$store.state.activeGame.activeGame.grid.bombsNumber -
         this.$store.state.activeGame.activeGame.grid.boxes.filter(box => {
@@ -48,17 +48,14 @@ export default {
   },
   methods: {
     reveal: function(boxIndex) {
-      this.$store
-        .dispatch('reveal', boxIndex)
-        .then(() => {
-          // console.log(`Box ${boxIndex} revealed`, res)
-        })
-        .catch(error => {
-          console.error(`An error occured revealing box ${boxIndex}`, error)
-        })
+      this.$store.dispatch('reveal', boxIndex).catch(error => {
+        console.error(`An error occured revealing box ${boxIndex}`, error)
+      })
     },
-    toggleFlag: () => {
-      console.log('TODO: toggleFlag')
+    toggleFlag: function(boxIndex) {
+      this.$store.dispatch('toggleFlag', boxIndex).catch(error => {
+        console.error(`An error occured toggling flag on box ${boxIndex}`, error)
+      })
     },
     nearBombs: function(gridBox) {
       // TODO: Implemented several times, check if it is not possible to de-duplicate

@@ -23,7 +23,7 @@ const actions = {
 
   async reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {
     const box = activeGame.grid.boxes[boxIndex]
-    if (box.isRevealed || box.isFlagged) return
+    if (activeGame.ended || box.isRevealed || box.isFlagged) return
 
     commit('REVEAL_BOX', box)
 
@@ -32,14 +32,51 @@ const actions = {
     }).length
 
     if (box.hasBomb) {
-      return console.log('Game over')
+      dispatch('gameOver')
     } else if (nearBombs === 0) {
       box.neighbors.forEach(neighbor => {
         dispatch('reveal', neighbor)
       })
     }
+    dispatch('checkIfWon')
     return
-    // this._parentGrid.checkIfWon()
+  },
+
+  async toggleFlag({ state: { activeGame }, dispatch }, boxIndex) {
+    const box = activeGame.grid.boxes[boxIndex]
+
+    if (activeGame.ended === true) return
+
+    box.isFlagged = !box.isFlagged
+
+    dispatch('checkIfWon')
+  },
+
+  async gameOver({ commit }) {
+    commit('SET_ACTIVE_GAME_LOST')
+    commit('REVEAL_ALL_BOXES')
+  },
+
+  async checkIfWon({ state: { activeGame }, commit }) {
+    const bombsLeft =
+      activeGame.grid.bombsNumber -
+      activeGame.grid.boxes.filter(box => {
+        return box.isFlagged
+      }).length
+
+    if (bombsLeft === 0) {
+      const flaggedBombsNumber = activeGame.grid.boxes.filter(box => {
+        return box.hasBomb === true && box.isRevealed === false && box.isFlagged === true
+      }).length
+
+      const revealedBoxNumber = activeGame.grid.boxes.filter(box => {
+        return box.isRevealed === true
+      }).length
+
+      if (flaggedBombsNumber + revealedBoxNumber === activeGame.grid.boxesNumber) {
+        commit('SET_ACTIVE_GAME_WON')
+      }
+    }
   }
 }
 
@@ -52,6 +89,19 @@ const mutations = {
   },
   REVEAL_BOX(state, box) {
     box.isRevealed = true
+  },
+  REVEAL_ALL_BOXES(state) {
+    state.activeGame.grid.boxes.forEach(box => {
+      box.isRevealed = true
+    })
+  },
+  SET_ACTIVE_GAME_LOST(state) {
+    state.activeGame.ended = true
+    state.activeGame.won = false
+  },
+  SET_ACTIVE_GAME_WON(state) {
+    state.activeGame.ended = true
+    state.activeGame.won = true
   }
 }
 

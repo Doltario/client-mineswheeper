@@ -15,18 +15,6 @@ const createGame = async () => {
       value: jsonResponse.grid ? jsonResponse.grid : {}
     })
 
-    // const neighbors = jsonResponse.neighbors
-    // delete jsonResponse.neighbors
-    // const opts = {
-    //   configurable: false,
-    //   enumerable: true,
-    //   writable: true
-    // }
-    // Object.defineProperty(jsonResponse, 'neighbors', {
-    //   //TODO: remove
-    //   ...opts,
-    //   value: jsonResponse.neighbors ? jsonResponse.neighbors.concat(neighbors) : neighbors
-    // })
     return game
   } catch (error) {
     console.error(`Cannot fetch: ${error}`)

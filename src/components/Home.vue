@@ -1,7 +1,7 @@
 <template>
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div>
-    <h1>Available routes:</h1>
+    <!-- <h1>Available routes:</h1>
     <ul>
       <li>
         <router-link to="/users">/users</router-link>
@@ -9,9 +9,9 @@
       <li>
         <router-link to="/users/add">/users/add</router-link>
       </li>
-    </ul>
+    </ul> -->
     <div>
-      <h2>This is a grid</h2>
+      <!-- <h2>This is a grid</h2> -->
       <Grid v-if="game && game.grid" />
     </div>
   </div>

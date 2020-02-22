@@ -11,13 +11,16 @@ const getters = {
 }
 
 const actions = {
+  SOCKET_REVEAL({ dispatch }, boxIndex) {
+    dispatch('reveal', boxIndex)
+  },
   async createGame({ commit }) {
     try {
       const createdGame = await createGame()
       commit('SET_ACTIVE_GAME', createdGame)
       return createdGame
     } catch (error) {
-      console.log('Cannot create game', error)
+      console.error('Cannot create game', error)
     }
   },
 

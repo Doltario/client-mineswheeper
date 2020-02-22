@@ -19,13 +19,12 @@
         </div>
       </div>
     </div>
-
-    <br />
+    <!-- <br />
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
       <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.index" class="box">
         {{ gridBox.index }}
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -48,9 +47,14 @@ export default {
   },
   methods: {
     reveal: function(boxIndex) {
-      this.$store.dispatch('reveal', boxIndex).catch(error => {
-        console.error(`An error occured revealing box ${boxIndex}`, error)
-      })
+      this.$store
+        .dispatch('reveal', boxIndex)
+        .then(() => {
+          this.$socket.emit('REVEAL', boxIndex)
+        })
+        .catch(error => {
+          console.error(`An error occured revealing box ${boxIndex}`, error)
+        })
     },
     toggleFlag: function(boxIndex) {
       this.$store.dispatch('toggleFlag', boxIndex).catch(error => {

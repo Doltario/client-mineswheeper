@@ -12,14 +12,12 @@
     </ul>
     <div>
       <h2>This is a grid</h2>
-      <Grid :grid="game.grid" />
+      <Grid v-if="game && game.grid" />
     </div>
   </div>
 </template>
 
 <script>
-import { MinesWheeper } from '@services/MinesWheeper.js'
-
 import Grid from '@components/Grid.vue'
 
 export default {
@@ -28,8 +26,18 @@ export default {
   },
   data() {
     return {
-      game: new MinesWheeper(30, 30, 40)
+      game: this.$store.state.activeGame.activeGame
     }
+  },
+  mounted: function() {
+    this.$store
+      .dispatch('createGame')
+      .then(res => {
+        this.game = res
+      })
+      .catch(error => {
+        console.error('Cannot create game', error)
+      })
   }
 }
 </script>

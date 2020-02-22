@@ -2,28 +2,27 @@
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div class="grid-container">
     <div>
-      {{ grid.bombsLeft }}
-      <span v-if="grid._gameWon === true">Win !</span>
-      <span v-if="grid._gameWon === false">Try again</span>
+      {{ bombsLeft }}
+      <span v-if="$store.state.activeGame.activeGame.won === true">Win !</span>
+      <span v-if="this.$store.state.activeGame.activeGame.won === false">Try again</span>
     </div>
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
-      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" class="box" @click="gridBox.reveal()" @contextmenu.prevent="gridBox.toggleFlag()">
-        <div v-if="gridBox._isRevealed && gridBox.hasBomb === true && gridBox.isFlagged === false" class="bomb">
+      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.index" class="box" @click="reveal(gridBox.index)" @contextmenu.prevent="toggleFlag(gridBox.index)">
+        <div v-if="gridBox.isRevealed && gridBox.hasBomb === true && gridBox.isFlagged === false" class="bomb">
           T
         </div>
         <div v-if="gridBox.isFlagged === true" class="flagged">
           🇫🇷
         </div>
-        <div v-if="gridBox._isRevealed && gridBox.hasBomb === false && gridBox.isFlagged === false" class="no-bomb">
-          {{ gridBox.nearBombs }}
+        <div v-if="gridBox.isRevealed && gridBox.hasBomb === false && gridBox.isFlagged === false" class="no-bomb">
+          {{ nearBombs(gridBox) }}
         </div>
       </div>
     </div>
-    <br />
-    <!-- <div>{{ grid.boxes[4].print() }}</div> -->
+
     <br />
     <div class="grid-content" :style="`width: ${20 * grid.width}px`">
-      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.id" class="box" @click="gridBox.reveal()">
+      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.index" class="box">
         {{ gridBox.index }}
       </div>
     </div>
@@ -32,7 +31,39 @@
 
 <script>
 export default {
-  props: ['grid']
+  computed: {
+    bombsLeft: function() {
+      return (
+        this.$store.state.activeGame.activeGame.grid.bombsNumber -
+        this.$store.state.activeGame.activeGame.grid.boxes.filter(box => {
+          return box.isFlagged
+        }).length
+      )
+    }
+  },
+  data() {
+    return {
+      grid: this.$store.state.activeGame.activeGame.grid
+    }
+  },
+  methods: {
+    reveal: function(boxIndex) {
+      this.$store.dispatch('reveal', boxIndex).catch(error => {
+        console.error(`An error occured revealing box ${boxIndex}`, error)
+      })
+    },
+    toggleFlag: function(boxIndex) {
+      this.$store.dispatch('toggleFlag', boxIndex).catch(error => {
+        console.error(`An error occured toggling flag on box ${boxIndex}`, error)
+      })
+    },
+    nearBombs: function(gridBox) {
+      // TODO: Implemented several times, check if it is not possible to de-duplicate
+      return gridBox.neighbors.filter(boxIndex => {
+        return this.grid.boxes[boxIndex].hasBomb
+      }).length
+    }
+  }
 }
 </script>
 

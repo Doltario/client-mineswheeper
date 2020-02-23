@@ -1,7 +1,10 @@
 import { createGame } from '@services/MinesWheeperClient'
 
 const state = {
-  activeGame: null
+  activeGame: null,
+  room: {
+    id: null
+  }
 }
 
 const getters = {
@@ -13,6 +16,13 @@ const getters = {
 const actions = {
   SOCKET_REVEAL({ dispatch }, boxIndex) {
     dispatch('reveal', boxIndex)
+  },
+  SOCKET_JOINED(state, clientId) {
+    //TODO: Not useful yet
+    console.info(`${clientId} joined the game`)
+  },
+  async joinRoom({ commit }, roomId) {
+    commit('SET_ROOM_ID', roomId)
   },
   async createGame({ commit }) {
     try {
@@ -105,6 +115,9 @@ const mutations = {
   SET_ACTIVE_GAME_WON(state) {
     state.activeGame.ended = true
     state.activeGame.won = true
+  },
+  SET_ROOM_ID(state, roomId) {
+    state.room.id = roomId
   }
 }
 

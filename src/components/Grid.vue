@@ -19,12 +19,10 @@
         </div>
       </div>
     </div>
-    <!-- <br />
-    <div class="grid-content" :style="`width: ${20 * grid.width}px`">
-      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.index" class="box">
-        {{ gridBox.index }}
-      </div>
-    </div> -->
+    <div>
+      <input type="text" v-model="roomId" />
+      <button @click="clickButton">join Room</button>
+    </div>
   </div>
 </template>
 
@@ -42,7 +40,8 @@ export default {
   },
   data() {
     return {
-      grid: this.$store.state.activeGame.activeGame.grid
+      grid: this.$store.state.activeGame.activeGame.grid,
+      roomId: null
     }
   },
   methods: {
@@ -50,7 +49,16 @@ export default {
       this.$store
         .dispatch('reveal', boxIndex)
         .then(() => {
-          this.$socket.emit('REVEAL', boxIndex)
+          const activeGame = this.$store.state.activeGame.activeGame
+          const box = activeGame.grid.boxes[boxIndex]
+          if (activeGame.ended || box.isFlagged) return
+          // 1#FIXME: maybe move socket emit to store,
+          // Because here state is already modified so we can't emit only if the box is not revealed because, here, it will always be revealed
+
+          // 2#FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
+          // It should be this.$socket.minesweeper but it is not working properly.
+          // Might open an issue on github later.
+          this.$socket.io.nsps['/minesweeper'].emit('REVEAL', boxIndex, this.$store.state.activeGame.room.id)
         })
         .catch(error => {
           console.error(`An error occured revealing box ${boxIndex}`, error)
@@ -66,6 +74,20 @@ export default {
       return gridBox.neighbors.filter(boxIndex => {
         return this.grid.boxes[boxIndex].hasBomb
       }).length
+    },
+    clickButton: function() {
+      // 3#FIXME: Generally you dispatch and then emit on socket, you should do the opposite -> emit is more about to fail than dispatch (related to 1#FIXME)
+      this.$store
+        .dispatch('joinRoom', this.roomId)
+        .then(() => {
+          // 4#FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
+          // It should be this.$socket.minesweeper but it is not working properly.
+          // Might open an issue on github later.
+          this.$socket.io.nsps['/minesweeper'].emit('JOIN_ROOM', this.$store.state.activeGame.room.id)
+        })
+        .catch(error => {
+          console.error(`An error occured joining room ${this.roomId}`, error)
+        })
     }
   }
 }

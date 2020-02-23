@@ -15,7 +15,8 @@ Vue.use(
     vuex: {
       store,
       actionPrefix: 'SOCKET_',
-      mutationPrefix: 'SOCKET_'
+      mutationPrefix: 'SOCKET_',
+      useConnectionNamespace: true
     }
     // options: { path: '/' } //Optional options
   })

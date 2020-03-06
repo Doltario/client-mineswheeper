@@ -1,4 +1,4 @@
-import { createGame } from '@services/MinesWheeperClient'
+import { createGame } from '@services/gameService'
 
 const state = {
   activeGame: null,
@@ -33,8 +33,7 @@ const actions = {
       console.error('Cannot create game', error)
     }
   },
-
-  async reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {
+  reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {
     const box = activeGame.grid.boxes[boxIndex]
     if (activeGame.ended || box.isRevealed || box.isFlagged) return
 
@@ -55,7 +54,7 @@ const actions = {
     return
   },
 
-  async toggleFlag({ state: { activeGame }, dispatch }, boxIndex) {
+  toggleFlag({ state: { activeGame }, dispatch }, boxIndex) {
     const box = activeGame.grid.boxes[boxIndex]
 
     if (activeGame.ended === true) return
@@ -65,12 +64,12 @@ const actions = {
     dispatch('checkIfWon')
   },
 
-  async gameOver({ commit }) {
+  gameOver({ commit }) {
     commit('SET_ACTIVE_GAME_LOST')
     commit('REVEAL_ALL_BOXES')
   },
 
-  async checkIfWon({ state: { activeGame }, commit }) {
+  checkIfWon({ state: { activeGame }, commit }) {
     const bombsLeft =
       activeGame.grid.bombsNumber -
       activeGame.grid.boxes.filter(box => {

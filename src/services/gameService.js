@@ -12,7 +12,7 @@ const createGame = async () => {
     }
     Object.defineProperty(game, 'grid', {
       ...opts,
-      value: jsonResponse.grid ? jsonResponse.grid : {}
+      value: jsonResponse.game.grid ? jsonResponse.game.grid : {}
     })
 
     return game

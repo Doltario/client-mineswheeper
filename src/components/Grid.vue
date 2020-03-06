@@ -19,10 +19,6 @@
         </div>
       </div>
     </div>
-    <div>
-      <input type="text" v-model="roomId" />
-      <button @click="clickButton">join Room</button>
-    </div>
   </div>
 </template>
 
@@ -74,20 +70,6 @@ export default {
       return gridBox.neighbors.filter(boxIndex => {
         return this.grid.boxes[boxIndex].hasBomb
       }).length
-    },
-    clickButton: function() {
-      // 3#FIXME: Generally you dispatch and then emit on socket, you should do the opposite -> emit is more about to fail than dispatch (related to 1#FIXME)
-      this.$store
-        .dispatch('joinRoom', this.roomId)
-        .then(() => {
-          // 4#FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
-          // It should be this.$socket.minesweeper but it is not working properly.
-          // Might open an issue on github later.
-          this.$socket.io.nsps['/minesweeper'].emit('JOIN_ROOM', this.$store.state.activeGame.room.id)
-        })
-        .catch(error => {
-          console.error(`An error occured joining room ${this.roomId}`, error)
-        })
     }
   }
 }

@@ -14,23 +14,23 @@ const getters = {
 }
 
 const actions = {
-  SOCKET_REVEAL({ dispatch }, boxIndex) {
-    dispatch('reveal', boxIndex)
-  },
-  SOCKET_JOINED(state, clientId) {
-    //TODO: Not useful yet
-    console.info(`${clientId} joined the game`)
-  },
-  async joinRoom({ commit }, roomId) {
-    commit('SET_ROOM_ID', roomId)
-  },
-  async createGame({ commit }) {
+  // SOCKET_REVEAL({ dispatch }, boxIndex) {
+  //   dispatch('reveal', boxIndex)
+  // },
+  // SOCKET_JOINED(state, clientId) {
+  //   //TODO: Not useful yet
+  //   console.info(`${clientId} joined the game`)
+  // },
+  // async joinRoom({ commit }, roomId) {
+  //   commit('SET_ROOM_ID', roomId)
+  // },
+  async createGame({ commit }, options) {
     try {
-      const createdGame = await createGame()
+      const createdGame = await createGame(options)
       commit('SET_ACTIVE_GAME', createdGame)
       return createdGame
     } catch (error) {
-      console.error('Cannot create game', error)
+      console.error('Create game request failed', error)
     }
   },
   reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {

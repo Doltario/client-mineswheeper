@@ -11,16 +11,18 @@ const getters = {
 }
 
 const actions = {
-  // SOCKET_REVEAL({ dispatch }, boxIndex) {
-  //   dispatch('reveal', boxIndex)
-  // },
-  // SOCKET_JOINED(state, clientId) {
-  //   //TODO: Not useful yet
-  //   console.info(`${clientId} joined the game`)
-  // },
-  // async joinRoom({ commit }, roomId) {
-  //   commit('SET_ROOM_ID', roomId)
-  // },
+  SOCKET_REVEAL({ dispatch }, boxIndex) {
+    dispatch('reveal', boxIndex)
+  },
+  SOCKET_ROOM_JOINED(state, roomId) {
+    console.info(`You joined ${roomId}`)
+  },
+  SOCKET_SOMEONE_JOINED_ROOM(state, clientId) {
+    console.info(`${clientId} joined your room`)
+  },
+
+  // felix@NOTE: Above are socket callback, triggered by socket server
+
   async createGame({ commit }, options) {
     try {
       const createdGame = await createGame(options)
@@ -31,7 +33,7 @@ const actions = {
       console.error('Create game request failed', error)
     }
   },
-  async loadGame({ commit }, gameId) {
+  async joinGame({ commit }, gameId) {
     try {
       const loadedGame = await loadGame(gameId)
 
@@ -62,12 +64,12 @@ const actions = {
     return
   },
 
-  toggleFlag({ state: { activeGame }, dispatch }, boxIndex) {
+  toggleFlag({ state: { activeGame }, dispatch, commit }, boxIndex) {
     const box = activeGame.grid.boxes[boxIndex]
 
     if (activeGame.ended === true) return
 
-    box.isFlagged = !box.isFlagged
+    commit('TOGGLE_BOX_FLAG', box)
 
     dispatch('checkIfWon')
   },
@@ -110,6 +112,9 @@ const mutations = {
   REVEAL_BOX(state, box) {
     box.isRevealed = true
   },
+  TOGGLE_BOX_FLAG(state, box) {
+    box.isFlagged = !box.isFlagged
+  },
   REVEAL_ALL_BOXES(state) {
     state.activeGame.grid.boxes.forEach(box => {
       box.isRevealed = true
@@ -122,9 +127,6 @@ const mutations = {
   SET_ACTIVE_GAME_WON(state) {
     state.activeGame.ended = true
     state.activeGame.won = true
-  },
-  SET_ROOM_ID(state, roomId) {
-    state.activeGame.roomId = roomId
   }
 }
 

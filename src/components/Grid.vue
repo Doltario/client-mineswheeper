@@ -46,6 +46,7 @@ export default {
         .then(() => {
           const activeGame = this.$store.state.activeGame.activeGame
           const box = activeGame.grid.boxes[boxIndex]
+
           if (activeGame.ended || box.isFlagged) return
           // 1#FIXME: maybe move socket emit to store,
           // Because here state is already modified so we can't emit only if the box is not revealed because, here, it will always be revealed
@@ -53,7 +54,8 @@ export default {
           // 2#FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
           // It should be this.$socket.minesweeper but it is not working properly.
           // Might open an issue on github later.
-          this.$socket.io.nsps['/minesweeper'].emit('REVEAL', boxIndex, this.$store.state.activeGame.roomId)
+
+          this.$socket.io.nsps['/minesweeper'].emit('REVEAL', boxIndex, this.$store.state.activeGame.activeGame._id)
         })
         .catch(error => {
           console.error(`An error occured revealing box ${boxIndex}`, error)

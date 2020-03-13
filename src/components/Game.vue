@@ -26,13 +26,16 @@ export default {
 
     if (to.params.gameId) {
       store
-        .dispatch('loadGame', to.params.gameId)
+        .dispatch('joinGame', to.params.gameId)
         .then(next)
         .catch(error => {
           console.error(`Cannot load game: ${error}`)
           next()
         })
     }
+  },
+  created() {
+    this.$socket.io.nsps['/minesweeper'].emit('JOIN_ROOM', this.$store.state.activeGame.activeGame._id)
   }
 }
 </script>

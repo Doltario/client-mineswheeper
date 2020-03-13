@@ -19,13 +19,6 @@
         </div>
       </div>
     </div>
-
-    <br />
-    <div class="grid-content" :style="`width: ${20 * grid.width}px`">
-      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.index" class="box">
-        {{ gridBox.index }}
-      </div>
-    </div>
   </div>
 </template>
 
@@ -48,9 +41,25 @@ export default {
   },
   methods: {
     reveal: function(boxIndex) {
-      this.$store.dispatch('reveal', boxIndex).catch(error => {
-        console.error(`An error occured revealing box ${boxIndex}`, error)
-      })
+      this.$store
+        .dispatch('reveal', boxIndex)
+        .then(() => {
+          const activeGame = this.$store.state.activeGame.activeGame
+          const box = activeGame.grid.boxes[boxIndex]
+
+          if (activeGame.ended || box.isFlagged) return
+          // 1#FIXME: maybe move socket emit to store,
+          // Because here state is already modified so we can't emit only if the box is not revealed because, here, it will always be revealed
+
+          // 2#FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
+          // It should be this.$socket.minesweeper but it is not working properly.
+          // Might open an issue on github later.
+
+          this.$socket.io.nsps['/minesweeper'].emit('REVEAL', boxIndex, this.$store.state.activeGame.activeGame._id)
+        })
+        .catch(error => {
+          console.error(`An error occured revealing box ${boxIndex}`, error)
+        })
     },
     toggleFlag: function(boxIndex) {
       this.$store.dispatch('toggleFlag', boxIndex).catch(error => {

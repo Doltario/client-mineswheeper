@@ -1,7 +1,7 @@
-import { createGame } from '@services/MinesWheeperClient'
+import { createGame, loadGame } from '@services/gameService'
 
 const state = {
-  activeGame: null
+  activeGame: {}
 }
 
 const getters = {
@@ -11,17 +11,39 @@ const getters = {
 }
 
 const actions = {
-  async createGame({ commit }) {
+  SOCKET_REVEAL({ dispatch }, boxIndex) {
+    dispatch('reveal', boxIndex)
+  },
+  SOCKET_ROOM_JOINED(state, roomId) {
+    console.info(`You joined ${roomId}`)
+  },
+  SOCKET_SOMEONE_JOINED_ROOM(state, clientId) {
+    console.info(`${clientId} joined your room`)
+  },
+
+  // felix@NOTE: Above are socket callback, triggered by socket server
+
+  async createGame({ commit }, options) {
     try {
-      const createdGame = await createGame()
+      const createdGame = await createGame(options)
+
       commit('SET_ACTIVE_GAME', createdGame)
       return createdGame
     } catch (error) {
-      console.log('Cannot create game', error)
+      console.error('Create game request failed', error)
     }
   },
+  async joinGame({ commit }, gameId) {
+    try {
+      const loadedGame = await loadGame(gameId)
 
-  async reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {
+      commit('SET_ACTIVE_GAME', loadedGame)
+      return loadedGame
+    } catch (error) {
+      console.error('Load game request failed', error)
+    }
+  },
+  reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {
     const box = activeGame.grid.boxes[boxIndex]
     if (activeGame.ended || box.isRevealed || box.isFlagged) return
 
@@ -42,22 +64,22 @@ const actions = {
     return
   },
 
-  async toggleFlag({ state: { activeGame }, dispatch }, boxIndex) {
+  toggleFlag({ state: { activeGame }, dispatch, commit }, boxIndex) {
     const box = activeGame.grid.boxes[boxIndex]
 
     if (activeGame.ended === true) return
 
-    box.isFlagged = !box.isFlagged
+    commit('TOGGLE_BOX_FLAG', box)
 
     dispatch('checkIfWon')
   },
 
-  async gameOver({ commit }) {
+  gameOver({ commit }) {
     commit('SET_ACTIVE_GAME_LOST')
     commit('REVEAL_ALL_BOXES')
   },
 
-  async checkIfWon({ state: { activeGame }, commit }) {
+  checkIfWon({ state: { activeGame }, commit }) {
     const bombsLeft =
       activeGame.grid.bombsNumber -
       activeGame.grid.boxes.filter(box => {
@@ -89,6 +111,9 @@ const mutations = {
   },
   REVEAL_BOX(state, box) {
     box.isRevealed = true
+  },
+  TOGGLE_BOX_FLAG(state, box) {
+    box.isFlagged = !box.isFlagged
   },
   REVEAL_ALL_BOXES(state) {
     state.activeGame.grid.boxes.forEach(box => {

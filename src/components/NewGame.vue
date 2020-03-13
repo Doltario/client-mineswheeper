@@ -38,8 +38,6 @@ export default {
       this.$store
         .dispatch('createGame', { width, height, bombsNumber })
         .then(createdGame => {
-          console.log('createdGame', createdGame)
-
           this.$router.push({ name: 'game', params: { gameId: createdGame._id } })
         })
         .catch(error => {

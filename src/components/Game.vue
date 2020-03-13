@@ -10,6 +10,7 @@
 
 <script>
 import Grid from '@components/Grid.vue'
+import store from '@store'
 
 export default {
   components: {
@@ -20,9 +21,17 @@ export default {
       game: this.$store.state.activeGame.activeGame
     }
   },
-  created: function() {
-    if (this.$route.params.gameId) {
-      console.log(`TODO: Fetch game with id ${this.$route.params.gameId}`)
+  beforeRouteEnter(to, from, next) {
+    if (from.name === 'newGame') return next()
+
+    if (to.params.gameId) {
+      store
+        .dispatch('loadGame', to.params.gameId)
+        .then(next)
+        .catch(error => {
+          console.error(`Cannot load game: ${error}`)
+          next()
+        })
     }
   }
 }

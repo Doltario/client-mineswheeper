@@ -1,10 +1,7 @@
-import { createGame } from '@services/gameService'
+import { createGame, loadGame } from '@services/gameService'
 
 const state = {
-  activeGame: null,
-  room: {
-    id: null
-  }
+  activeGame: {}
 }
 
 const getters = {
@@ -27,10 +24,21 @@ const actions = {
   async createGame({ commit }, options) {
     try {
       const createdGame = await createGame(options)
+
       commit('SET_ACTIVE_GAME', createdGame)
       return createdGame
     } catch (error) {
       console.error('Create game request failed', error)
+    }
+  },
+  async loadGame({ commit }, gameId) {
+    try {
+      const loadedGame = await loadGame(gameId)
+
+      commit('SET_ACTIVE_GAME', loadedGame)
+      return loadedGame
+    } catch (error) {
+      console.error('Load game request failed', error)
     }
   },
   reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {
@@ -116,7 +124,7 @@ const mutations = {
     state.activeGame.won = true
   },
   SET_ROOM_ID(state, roomId) {
-    state.room.id = roomId
+    state.activeGame.roomId = roomId
   }
 }
 

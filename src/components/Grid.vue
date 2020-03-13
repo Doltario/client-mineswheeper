@@ -36,8 +36,7 @@ export default {
   },
   data() {
     return {
-      grid: this.$store.state.activeGame.activeGame.grid,
-      roomId: null
+      grid: this.$store.state.activeGame.activeGame.grid
     }
   },
   methods: {
@@ -54,7 +53,7 @@ export default {
           // 2#FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
           // It should be this.$socket.minesweeper but it is not working properly.
           // Might open an issue on github later.
-          this.$socket.io.nsps['/minesweeper'].emit('REVEAL', boxIndex, this.$store.state.activeGame.room.id)
+          this.$socket.io.nsps['/minesweeper'].emit('REVEAL', boxIndex, this.$store.state.activeGame.roomId)
         })
         .catch(error => {
           console.error(`An error occured revealing box ${boxIndex}`, error)

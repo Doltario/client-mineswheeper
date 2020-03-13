@@ -3,7 +3,7 @@ const createGame = async options => {
   try {
     const response = await fetch('http://localhost:3001/game', {
       method: 'POST',
-      body: JSON.stringify({ width, height, bombsNumber })
+      body: { width, height, bombsNumber }
     })
     const jsonResponse = await response.json()
 
@@ -25,8 +25,19 @@ const createGame = async options => {
 
     // return game
   } catch (error) {
-    console.error(`Cannot fetch: ${error}`)
+    console.error(`Cannot post game: ${error}`)
   }
 }
 
-export { createGame }
+const loadGame = async gameId => {
+  try {
+    const response = await fetch(`http://localhost:3001/game/${gameId}`)
+    const jsonResponse = await response.json()
+
+    return jsonResponse.game
+  } catch (error) {
+    console.error(`Cannot get game: ${error}`)
+  }
+}
+
+export { createGame, loadGame }

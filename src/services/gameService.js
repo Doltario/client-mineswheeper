@@ -1,9 +1,10 @@
 const createGame = async options => {
   const { height, width, bombsNumber } = options
+
   try {
     const response = await fetch('http://localhost:3001/game', {
       method: 'POST',
-      body: { width, height, bombsNumber }
+      body: JSON.stringify({ width, height, bombsNumber }) // felix@TODO: This is bad to stringify the body, but I can't find out how to parse the body in fastify API…
     })
     const jsonResponse = await response.json()
 

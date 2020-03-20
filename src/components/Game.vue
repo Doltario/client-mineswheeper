@@ -24,18 +24,18 @@ export default {
   beforeRouteEnter(to, from, next) {
     if (store.state.activeGame.activeGame._id === to.params.gameId) return next() // felix@NOTE: Do not fetch game if it is already in store
 
-    if (to.params.gameId) {
-      store
-        .dispatch('joinGame', to.params.gameId)
-        .then(next)
-        .catch(error => {
-          console.error(`Cannot load game: ${error}`)
-          next()
-        })
-    }
+    store
+      .dispatch('getGame', to.params.gameId)
+      .then(next)
+      .catch(error => {
+        console.error(`Cannot load game: ${error}`)
+        next()
+      })
   },
   created() {
-    this.$socket.io.nsps['/minesweeper'].emit('JOIN_ROOM', this.$store.state.activeGame.activeGame._id)
+    if (store.state.activeGame.activeGame.online) {
+      this.$socket.io.nsps['/minesweeper'].emit('JOIN_ROOM', this.$store.state.activeGame.activeGame._id)
+    }
   }
 }
 </script>

@@ -28,12 +28,13 @@ const actions = {
       const createdGame = await createGame(options)
 
       commit('SET_ACTIVE_GAME', createdGame)
+
       return createdGame
     } catch (error) {
       console.error('Create game request failed', error)
     }
   },
-  async joinGame({ commit }, gameId) {
+  async getGame({ commit }, gameId) {
     try {
       const loadedGame = await loadGame(gameId)
 

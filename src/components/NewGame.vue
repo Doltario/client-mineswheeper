@@ -6,15 +6,25 @@
     <div>
       <div>
         <label for="width">Grid width</label>
-        <input type="text" name="width" v-model="width" />
+        <input type="text" id="width" v-model="width" />
       </div>
       <div>
         <label for="height">Grid height</label>
-        <input type="text" name="height" v-model="height" />
+        <input type="text" id="height" v-model="height" />
       </div>
       <div>
         <label for="bombs-number">Bombs number</label>
-        <input type="text" name="bombs-number" v-model="bombsNumber" />
+        <input type="text" id="bombs-number" v-model="bombsNumber" />
+      </div>
+      <div>
+        <div>
+          <input type="radio" id="online" name="online" v-model="online" :value="true" />
+          <label for="online">online</label>
+        </div>
+        <div>
+          <input type="radio" id="solo" name="online" v-model="online" :value="false" />
+          <label for="solo">solo</label>
+        </div>
       </div>
 
       <button @click="createGame">Create Game</button>
@@ -28,15 +38,16 @@ export default {
     return {
       width: 10,
       height: 10,
-      bombsNumber: 20
+      bombsNumber: 20,
+      online: false
     }
   },
   methods: {
     createGame: function() {
-      const { width, height, bombsNumber } = this
+      const { width, height, bombsNumber, online } = this
 
       this.$store
-        .dispatch('createGame', { width, height, bombsNumber })
+        .dispatch('createGame', { width, height, bombsNumber, online })
         .then(createdGame => {
           this.$router.push({ name: 'game', params: { gameId: createdGame._id } })
         })

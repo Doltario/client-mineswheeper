@@ -65,9 +65,17 @@ export default {
 
       if (activeGame.ended || box.isRevealed) return
 
-      this.$store.dispatch('toggleFlag', boxIndex).catch(error => {
-        console.error(`An error occured toggling flag on box ${boxIndex}`, error)
-      })
+      this.$store
+        .dispatch('toggleFlag', boxIndex)
+        .then(() => {
+          // FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
+          // It should be this.$socket.minesweeper but it is not working properly.
+          // Might open an issue on github later.
+          this.$socket.io.nsps['/minesweeper'].emit('TOGGLE_FLAG', boxIndex, activeGame._id)
+        })
+        .catch(error => {
+          console.error(`An error occured toggling flag on box ${boxIndex}`, error)
+        })
     },
     nearBombs: function(gridBox) {
       // TODO: Implemented several times, check if it is not possible to de-duplicate

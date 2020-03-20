@@ -11,16 +11,18 @@ const getters = {
 }
 
 const actions = {
-  SOCKET_REVEAL({ dispatch }, boxIndex) {
-    dispatch('reveal', boxIndex)
-  },
   SOCKET_ROOM_JOINED(state, roomId) {
     console.info(`You joined ${roomId}`)
   },
   SOCKET_SOMEONE_JOINED_ROOM(state, clientId) {
     console.info(`${clientId} joined your room`)
   },
-
+  SOCKET_REVEAL({ dispatch }, boxIndex) {
+    dispatch('reveal', boxIndex)
+  },
+  SOCKET_TOGGLE_FLAG({ dispatch }, boxIndex) {
+    dispatch('toggleFlag', boxIndex)
+  },
   // felix@NOTE: Above are socket callback, triggered by socket server
 
   async createGame({ commit }, options) {

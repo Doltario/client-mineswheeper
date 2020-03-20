@@ -2,7 +2,7 @@ const createGame = async options => {
   const { height, width, bombsNumber } = options
 
   try {
-    const response = await fetch('http://localhost:3001/game', {
+    const response = await fetch(`${process.env.VUE_APP_API_URL}/game`, {
       method: 'POST',
       body: JSON.stringify({ width, height, bombsNumber }) // felix@TODO: This is bad to stringify the body, but I can't find out how to parse the body in fastify API…
     })
@@ -32,7 +32,7 @@ const createGame = async options => {
 
 const loadGame = async gameId => {
   try {
-    const response = await fetch(`http://localhost:3001/game/${gameId}`)
+    const response = await fetch(`${process.env.VUE_APP_API_URL}/game/${gameId}`)
     const jsonResponse = await response.json()
 
     return jsonResponse.game

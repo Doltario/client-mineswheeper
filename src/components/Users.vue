@@ -19,7 +19,7 @@ export default {
   methods: {
     async getUsers() {
       try {
-        const response = await fetch('http://localhost:3001/users')
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/users`)
         const jsonResponse = await response.json()
         this.users = jsonResponse.users
       } catch (error) {

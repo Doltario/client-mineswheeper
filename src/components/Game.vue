@@ -22,7 +22,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    if (from.name === 'newGame') return next()
+    if (store.state.activeGame.activeGame._id === to.params.gameId) return next() // felix@NOTE: Do not fetch game if it is already in store
 
     if (to.params.gameId) {
       store

@@ -46,9 +46,8 @@ const actions = {
       console.error('Load game request failed', error)
     }
   },
-  reveal({ state: { activeGame }, commit, dispatch }, boxIndex) {
-    const box = activeGame.grid.boxes[boxIndex]
-    if (activeGame.ended || box.isRevealed || box.isFlagged) return
+  _reveal({ state: { activeGame }, commit, dispatch }, box) {
+    if (box.isRevealed || box.isFlagged) return
 
     commit('REVEAL_BOX', box)
 
@@ -56,15 +55,24 @@ const actions = {
       return activeGame.grid.boxes[boxIndex].hasBomb
     }).length
 
-    if (box.hasBomb) {
-      dispatch('gameOver')
-    } else if (nearBombs === 0) {
+    if (nearBombs === 0) {
       box.neighbors.forEach(neighbor => {
-        dispatch('reveal', neighbor)
+        dispatch('_reveal', activeGame.grid.boxes[neighbor])
       })
     }
-    dispatch('checkIfWon')
     return
+  },
+  reveal({ state: { activeGame }, dispatch }, boxIndex) {
+    const box = activeGame.grid.boxes[boxIndex]
+    if (activeGame.ended || box.isRevealed || box.isFlagged) return
+
+    if (box.hasBomb) {
+      dispatch('gameOver')
+    } else {
+      dispatch('_reveal', box)
+    }
+
+    dispatch('checkIfWon')
   },
 
   toggleFlag({ state: { activeGame }, dispatch, commit }, boxIndex) {

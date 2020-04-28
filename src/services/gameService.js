@@ -49,4 +49,16 @@ const saveGame = async game => {
   return jsonResponse.game
 }
 
-export { createGame, loadGame, saveGame }
+const resetGame = async gameId => {
+  try {
+    const response = await fetch(`${process.env.VUE_APP_API_URL}/game/${gameId}/reset`, {
+      method: 'PUT',
+    })
+    const jsonResponse = await response.json()
+    return jsonResponse.game
+  } catch (error) {
+    console.error(`Cannot reset game: ${error}`)
+  }
+}
+
+export { createGame, loadGame, saveGame, resetGame }

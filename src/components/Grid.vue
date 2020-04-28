@@ -4,10 +4,10 @@
     <div>
       {{ bombsLeft }}
       <span v-if="$store.state.activeGame.activeGame.won === true">Win !</span>
-      <span v-if="this.$store.state.activeGame.activeGame.won === false">Try again</span>
+      <span @click="resetGame()" v-if="$store.state.activeGame.activeGame.won === false">Try again</span>
     </div>
-    <div class="grid-content" :style="`width: ${20 * grid.width}px`">
-      <div v-for="gridBox in grid.boxes" v-bind:key="gridBox.index" class="box" @click="reveal(gridBox.index)" @contextmenu.prevent="toggleFlag(gridBox.index)">
+    <div class="grid-content" :style="`width: ${20 * $store.state.activeGame.activeGame.grid.width}px`">
+      <div v-for="gridBox in $store.state.activeGame.activeGame.grid.boxes" v-bind:key="gridBox.index" class="box" @click="reveal(gridBox.index)" @contextmenu.prevent="toggleFlag(gridBox.index)">
         <div v-if="gridBox.isRevealed && gridBox.hasBomb === true && gridBox.isFlagged === false" class="bomb">
           T
         </div>
@@ -32,11 +32,6 @@ export default {
           return box.isFlagged
         }).length
       )
-    }
-  },
-  data() {
-    return {
-      grid: this.$store.state.activeGame.activeGame.grid
     }
   },
   methods: {
@@ -71,6 +66,7 @@ export default {
           // FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
           // It should be this.$socket.minesweeper but it is not working properly.
           // Might open an issue on github later.
+
           this.$socket.io.nsps['/minesweeper'].emit('TOGGLE_FLAG', boxIndex, activeGame._id)
         })
         .catch(error => {
@@ -80,8 +76,24 @@ export default {
     nearBombs: function(gridBox) {
       // TODO: Implemented several times, check if it is not possible to de-duplicate
       return gridBox.neighbors.filter(boxIndex => {
-        return this.grid.boxes[boxIndex].hasBomb
+        return this.$store.state.activeGame.activeGame.grid.boxes[boxIndex].hasBomb
       }).length
+    },
+    resetGame: function() {
+      // felix@NOTE: avoid destructuring object, VueJS does not handling reactivity well with that
+      const { activeGame } = this.$store.state.activeGame
+      
+      this.$store
+        .dispatch('resetGame', activeGame._id)
+        .then(() => {
+          // FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
+          // It should be this.$socket.minesweeper but it is not working properly.
+          // Might open an issue on github later.          
+          this.$socket.io.nsps['/minesweeper'].emit('RESET_GAME', this.$store.state.activeGame.activeGame, this.$store.state.activeGame.activeGame._id)
+        })
+        .catch(error => {
+          console.error(`An error occured while resetting game ${activeGame._id}`, error)
+        })
     }
   }
 }

@@ -1,4 +1,4 @@
-import { createGame, loadGame, saveGame } from '@services/gameService'
+import { createGame, loadGame, saveGame, resetGame } from '@services/gameService'
 
 const state = {
   activeGame: {}
@@ -23,6 +23,9 @@ const actions = {
   SOCKET_TOGGLE_FLAG({ dispatch }, boxIndex) {
     dispatch('toggleFlag', boxIndex)
   },
+  SOCKET_RESET_GAME({ commit }, game) {
+    commit('SET_ACTIVE_GAME', game)
+  },
   // felix@NOTE: Above are socket callback, triggered by socket server
 
   async createGame({ commit }, options) {
@@ -32,6 +35,16 @@ const actions = {
       commit('SET_ACTIVE_GAME', createdGame)
 
       return createdGame
+    } catch (error) {
+      console.error('Create game request failed', error)
+    }
+  },
+  async resetGame({ commit }, gameId) {
+    try {
+      const updatedGame = await resetGame(gameId)
+      commit('SET_ACTIVE_GAME', updatedGame)
+
+      return
     } catch (error) {
       console.error('Create game request failed', error)
     }
@@ -77,22 +90,19 @@ const actions = {
 
     saveGame(activeGame)
   },
-
   toggleFlag({ state: { activeGame }, dispatch, commit }, boxIndex) {
-    const box = activeGame.grid.boxes[boxIndex]
-
     if (activeGame.ended === true) return
+
+    const box = activeGame.grid.boxes[boxIndex]
 
     commit('TOGGLE_BOX_FLAG', box)
 
     dispatch('checkIfWon')
   },
-
   gameOver({ commit }) {
     commit('SET_ACTIVE_GAME_LOST')
     commit('REVEAL_ALL_BOXES')
   },
-
   checkIfWon({ state: { activeGame }, commit }) {
     const bombsLeft =
       activeGame.grid.bombsNumber -
@@ -119,9 +129,6 @@ const actions = {
 const mutations = {
   SET_ACTIVE_GAME(state, newGame) {
     state.activeGame = newGame
-  },
-  RESET_ACTIVE_GAME(state) {
-    state.activeGame = null
   },
   REVEAL_BOX(state, box) {
     box.isRevealed = true

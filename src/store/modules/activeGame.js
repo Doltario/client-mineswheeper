@@ -1,4 +1,4 @@
-import { createGame, loadGame } from '@services/gameService'
+import { createGame, loadGame, saveGame } from '@services/gameService'
 
 const state = {
   activeGame: {}
@@ -17,8 +17,8 @@ const actions = {
   SOCKET_SOMEONE_JOINED_ROOM(state, clientId) {
     console.info(`${clientId} joined your room`)
   },
-  SOCKET_REVEAL({ dispatch }, boxIndex) {
-    dispatch('reveal', boxIndex)
+  SOCKET_CLICK_BOX({ dispatch }, boxIndex) {
+    dispatch('clickBox', boxIndex)
   },
   SOCKET_TOGGLE_FLAG({ dispatch }, boxIndex) {
     dispatch('toggleFlag', boxIndex)
@@ -46,7 +46,7 @@ const actions = {
       console.error('Load game request failed', error)
     }
   },
-  _reveal({ state: { activeGame }, commit, dispatch }, box) {
+  reveal({ state: { activeGame }, commit, dispatch }, box) {
     if (box.isRevealed || box.isFlagged) return
 
     commit('REVEAL_BOX', box)
@@ -57,22 +57,25 @@ const actions = {
 
     if (nearBombs === 0) {
       box.neighbors.forEach(neighbor => {
-        dispatch('_reveal', activeGame.grid.boxes[neighbor])
+        dispatch('reveal', activeGame.grid.boxes[neighbor])
       })
     }
     return
   },
-  reveal({ state: { activeGame }, dispatch }, boxIndex) {
+  clickBox({ state: { activeGame }, dispatch }, boxIndex) {
     const box = activeGame.grid.boxes[boxIndex]
     if (activeGame.ended || box.isRevealed || box.isFlagged) return
 
     if (box.hasBomb) {
       dispatch('gameOver')
+      saveGame(activeGame)
+      return
     } else {
-      dispatch('_reveal', box)
+      dispatch('reveal', box)
     }
-
     dispatch('checkIfWon')
+
+    saveGame(activeGame)
   },
 
   toggleFlag({ state: { activeGame }, dispatch, commit }, boxIndex) {

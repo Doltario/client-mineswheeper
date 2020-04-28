@@ -47,13 +47,13 @@ export default {
       if (activeGame.ended || box.isRevealed || box.isFlagged) return
 
       this.$store
-        .dispatch('reveal', boxIndex)
+        .dispatch('clickBox', boxIndex)
         .then(() => {
           // FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
           // It should be this.$socket.minesweeper but it is not working properly.
           // Might open an issue on github later.
 
-          this.$socket.io.nsps['/minesweeper'].emit('REVEAL', boxIndex, activeGame._id)
+          this.$socket.io.nsps['/minesweeper'].emit('CLICK_BOX', boxIndex, activeGame._id)
         })
         .catch(error => {
           console.error(`An error occured revealing box ${boxIndex}`, error)

@@ -34,11 +34,19 @@ const loadGame = async gameId => {
   try {
     const response = await fetch(`${process.env.VUE_APP_API_URL}/game/${gameId}`)
     const jsonResponse = await response.json()
-    console.log('GAME', jsonResponse.game)
     return jsonResponse.game
   } catch (error) {
     console.error(`Cannot get game: ${error}`)
   }
 }
 
-export { createGame, loadGame }
+const saveGame = async game => {
+  const response = await fetch(`${process.env.VUE_APP_API_URL}/game/${game._id}`, {
+    method: 'PUT',
+    body: JSON.stringify(game) // felix@TODO: This is bad to stringify the body, but I can't find out how to parse the body in fastify API…
+  })
+  const jsonResponse = await response.json()  
+  return jsonResponse.game
+}
+
+export { createGame, loadGame, saveGame }

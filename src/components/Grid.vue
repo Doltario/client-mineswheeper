@@ -36,38 +36,28 @@ export default {
   },
   methods: {
     reveal: function(boxIndex) {
-      const { activeGame } = this.$store.state.activeGame
-      const box = activeGame.grid.boxes[boxIndex]
+      const box = this.$store.state.activeGame.activeGame.grid.boxes[boxIndex]
 
-      if (activeGame.ended || box.isRevealed || box.isFlagged) return
+      if (this.$store.state.activeGame.activeGame.ended || box.isRevealed || box.isFlagged) return
 
       this.$store
         .dispatch('clickBox', boxIndex)
         .then(() => {
-          // FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
-          // It should be this.$socket.minesweeper but it is not working properly.
-          // Might open an issue on github later.
-
-          this.$socket.io.nsps['/minesweeper'].emit('CLICK_BOX', boxIndex, activeGame._id)
+          this.$socket.client.emit('clickBox', boxIndex, this.$store.state.activeGame.activeGame._id)
         })
         .catch(error => {
           console.error(`An error occured revealing box ${boxIndex}`, error)
         })
     },
     toggleFlag: function(boxIndex) {
-      const { activeGame } = this.$store.state.activeGame
-      const box = activeGame.grid.boxes[boxIndex]
+      const box = this.$store.state.activeGame.activeGame.grid.boxes[boxIndex]
 
-      if (activeGame.ended || box.isRevealed) return
+      if (this.$store.state.activeGame.activeGame.ended || box.isRevealed) return
 
       this.$store
         .dispatch('toggleFlag', boxIndex)
         .then(() => {
-          // FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
-          // It should be this.$socket.minesweeper but it is not working properly.
-          // Might open an issue on github later.
-
-          this.$socket.io.nsps['/minesweeper'].emit('TOGGLE_FLAG', boxIndex, activeGame._id)
+          this.$socket.client.emit('toggleFlag', boxIndex, this.$store.state.activeGame.activeGame._id)
         })
         .catch(error => {
           console.error(`An error occured toggling flag on box ${boxIndex}`, error)
@@ -80,19 +70,13 @@ export default {
       }).length
     },
     resetGame: function() {
-      // felix@NOTE: avoid destructuring object, VueJS does not handling reactivity well with that
-      const { activeGame } = this.$store.state.activeGame
-      
       this.$store
-        .dispatch('resetGame', activeGame._id)
+        .dispatch('resetGame', this.$store.state.activeGame.activeGame._id)
         .then(() => {
-          // FIXME: this.$socket.io.nsps['/minesweeper'] is a workaround.
-          // It should be this.$socket.minesweeper but it is not working properly.
-          // Might open an issue on github later.          
-          this.$socket.io.nsps['/minesweeper'].emit('RESET_GAME', this.$store.state.activeGame.activeGame, this.$store.state.activeGame.activeGame._id)
+          this.$socket.client.emit('resetGame', this.$store.state.activeGame.activeGame, this.$store.state.activeGame.activeGame._id)
         })
         .catch(error => {
-          console.error(`An error occured while resetting game ${activeGame._id}`, error)
+          console.error(`An error occured while resetting game ${this.$store.state.activeGame.activeGame._id}`, error)
         })
     }
   }

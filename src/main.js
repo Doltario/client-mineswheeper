@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import VueSocketIOExt from 'vue-socket.io-extended'
+import io from 'socket.io-client'
 import App from './App.vue'
 import { router } from './router/router'
 import store from '@store'
@@ -6,21 +8,9 @@ import './global.scss'
 
 Vue.config.productionTip = false
 
-import VueSocketIO from 'vue-socket.io'
+const socket = io(process.env.VUE_APP_SOCKET_URL)
 
-Vue.use(
-  new VueSocketIO({
-    debug: process.env.VUE_APP_NODE_ENV,
-    connection: process.env.VUE_APP_SOCKET_URL,
-    vuex: {
-      store,
-      actionPrefix: 'SOCKET_',
-      mutationPrefix: 'SOCKET_',
-      useConnectionNamespace: true
-    }
-    // options: { path: '/' } //Optional options
-  })
-)
+Vue.use(VueSocketIOExt, socket, { store })
 
 new Vue({
   router,
@@ -28,7 +18,7 @@ new Vue({
   sockets: {
     connect: () => {
       console.info('Socket connected')
-    }
+    },
   },
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount('#app')

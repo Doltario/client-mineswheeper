@@ -14,11 +14,11 @@ import store from '@store'
 
 export default {
   components: {
-    Grid
+    Grid,
   },
   data() {
     return {
-      game: this.$store.state.activeGame.activeGame
+      game: this.$store.state.activeGame.activeGame,
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -27,16 +27,16 @@ export default {
     store
       .dispatch('getGame', to.params.gameId)
       .then(next)
-      .catch(error => {
+      .catch((error) => {
         console.error(`Cannot load game: ${error}`)
         next()
       })
   },
   created() {
     if (store.state.activeGame.activeGame.online) {
-      this.$socket.io.nsps['/minesweeper'].emit('JOIN_ROOM', this.$store.state.activeGame.activeGame._id)
+      this.$socket.client.emit('joinRoom', this.$store.state.activeGame.activeGame._id)
     }
-  }
+  },
 }
 </script>
 

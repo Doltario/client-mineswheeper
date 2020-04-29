@@ -11,19 +11,19 @@ const getters = {
 }
 
 const actions = {
-  SOCKET_ROOM_JOINED(state, roomId) {
+  socket_roomJoined(state, roomId) {
     console.info(`You joined ${roomId}`)
   },
-  SOCKET_SOMEONE_JOINED_ROOM(state, clientId) {
+  socket_someoneJoinedRoom(state, clientId) {
     console.info(`${clientId} joined your room`)
   },
-  SOCKET_CLICK_BOX({ dispatch }, boxIndex) {
+  socket_clickBox({ dispatch }, boxIndex) {
     dispatch('clickBox', boxIndex)
   },
-  SOCKET_TOGGLE_FLAG({ dispatch }, boxIndex) {
+  socket_toggleFlag({ dispatch }, boxIndex) {
     dispatch('toggleFlag', boxIndex)
   },
-  SOCKET_RESET_GAME({ commit }, game) {
+  socket_resetGame({ commit }, game) {
     commit('SET_ACTIVE_GAME', game)
   },
   // felix@NOTE: Above are socket callback, triggered by socket server

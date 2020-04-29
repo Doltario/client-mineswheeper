@@ -39,7 +39,7 @@ export default {
       width: 10,
       height: 10,
       bombsNumber: 20,
-      online: false
+      online: false,
     }
   },
   methods: {
@@ -48,14 +48,14 @@ export default {
 
       this.$store
         .dispatch('createGame', { width, height, bombsNumber, online })
-        .then(createdGame => {
+        .then((createdGame) => {
           this.$router.push({ name: 'game', params: { gameId: createdGame._id } })
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Cannot create game', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

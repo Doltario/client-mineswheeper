@@ -1,13 +1,13 @@
 import { createGame, loadGame, saveGame, resetGame } from '@services/gameService'
 
 const state = {
-  activeGame: {}
+  activeGame: {},
 }
 
 const getters = {
   activeGame(state) {
     return state.activeGame
-  }
+  },
 }
 
 const actions = {
@@ -64,12 +64,12 @@ const actions = {
 
     commit('REVEAL_BOX', box)
 
-    const nearBombs = box.neighbors.filter(boxIndex => {
+    const nearBombs = box.neighbors.filter((boxIndex) => {
       return activeGame.grid.boxes[boxIndex].hasBomb
     }).length
 
     if (nearBombs === 0) {
-      box.neighbors.forEach(neighbor => {
+      box.neighbors.forEach((neighbor) => {
         dispatch('reveal', activeGame.grid.boxes[neighbor])
       })
     }
@@ -106,16 +106,16 @@ const actions = {
   checkIfWon({ state: { activeGame }, commit }) {
     const bombsLeft =
       activeGame.grid.bombsNumber -
-      activeGame.grid.boxes.filter(box => {
+      activeGame.grid.boxes.filter((box) => {
         return box.isFlagged
       }).length
 
     if (bombsLeft === 0) {
-      const flaggedBombsNumber = activeGame.grid.boxes.filter(box => {
+      const flaggedBombsNumber = activeGame.grid.boxes.filter((box) => {
         return box.hasBomb === true && box.isRevealed === false && box.isFlagged === true
       }).length
 
-      const revealedBoxNumber = activeGame.grid.boxes.filter(box => {
+      const revealedBoxNumber = activeGame.grid.boxes.filter((box) => {
         return box.isRevealed === true
       }).length
 
@@ -123,7 +123,7 @@ const actions = {
         commit('SET_ACTIVE_GAME_WON')
       }
     }
-  }
+  },
 }
 
 const mutations = {
@@ -137,7 +137,7 @@ const mutations = {
     box.isFlagged = !box.isFlagged
   },
   REVEAL_ALL_BOXES(state) {
-    state.activeGame.grid.boxes.forEach(box => {
+    state.activeGame.grid.boxes.forEach((box) => {
       box.isRevealed = true
     })
   },
@@ -148,12 +148,12 @@ const mutations = {
   SET_ACTIVE_GAME_WON(state) {
     state.activeGame.ended = true
     state.activeGame.won = true
-  }
+  },
 }
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 }

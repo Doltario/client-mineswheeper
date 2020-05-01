@@ -1,7 +1,7 @@
 const state = {
   me: {
     nickname: '',
-    socketId: null
+    socketId: null,
   },
   others: [],
 }
@@ -31,6 +31,9 @@ const actions = {
     })
     console.info(`${player.nickname} left your room`)
     commit('REMOVE_OTHER_PLAYER', player)
+  },
+  socket_mouseMove({ commit }, { socketId, position }) {
+    commit('SET_PLAYER_POSITION', { socketId, position })
   },
   // felix@NOTE: Above are socket callbacks, triggered by socket server
   setSelfNickname({ commit }, nickname) {
@@ -62,6 +65,13 @@ const mutations = {
       }
     })
     state.others = players
+  },
+  SET_PLAYER_POSITION(state, { socketId, position }) {
+    state.others.forEach((player) => {
+      if (player.socketId === socketId) {
+        player.position = position
+      }
+    })
   },
 }
 

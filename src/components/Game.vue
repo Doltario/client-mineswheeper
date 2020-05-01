@@ -4,7 +4,7 @@
       <router-link to="/">Go back home</router-link>
       <Grid v-if="game && game.grid" />
       <div v-if="!game">Game not found</div>
-      <!-- <Players /> felix@TODO: implement list of players -->
+      <Players />
     </div>
     <div v-if="showNicknameSetter === true">
       <label for="nickname">Nickname</label>
@@ -16,11 +16,13 @@
 
 <script>
 import Grid from '@components/Grid.vue'
-import store from '@store'
+import Players from '@components/Players.vue'
+import store from '@store' // NOTE: Imported to use it in beforeRouteEnter
 
 export default {
   components: {
     Grid,
+    Players,
   },
   data() {
     return {

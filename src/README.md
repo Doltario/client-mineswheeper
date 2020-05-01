@@ -18,6 +18,7 @@ Project should be launch at http://localhost:8080
 - socket for cursors
 - Print people's names
 - Prevent socket call in solo mode (done only for joining)
+- Refactor store.players.others into something else because the current player is included in it (probably do state.players.players)
 
 **ROADMAP**:
 

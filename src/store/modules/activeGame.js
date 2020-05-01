@@ -11,12 +11,6 @@ const getters = {
 }
 
 const actions = {
-  socket_roomJoined(state, roomId) {
-    console.info(`You joined ${roomId}`)
-  },
-  socket_someoneJoinedRoom(state, clientId) {
-    console.info(`${clientId} joined your room`)
-  },
   socket_clickBox({ dispatch }, boxIndex) {
     dispatch('clickBox', boxIndex)
   },
@@ -26,12 +20,13 @@ const actions = {
   socket_resetGame({ commit }, game) {
     commit('SET_ACTIVE_GAME', game)
   },
-  // felix@NOTE: Above are socket callback, triggered by socket server
+  // felix@NOTE: Above are socket callbacks, triggered by socket server
 
   async createGame({ commit }, options) {
     try {
       const createdGame = await createGame(options)
 
+      commit('SET_SELF_NICKNAME', options.nickname)
       commit('SET_ACTIVE_GAME', createdGame)
 
       return createdGame

@@ -1,9 +1,15 @@
 <template>
   <div>
-    <div>
+    <div v-if="showNicknameSetter === false">
       <router-link to="/">Go back home</router-link>
       <Grid v-if="game && game.grid" />
       <div v-if="!game">Game not found</div>
+      <!-- <Players /> felix@TODO: implement list of players -->
+    </div>
+    <div v-if="showNicknameSetter === true">
+      <label for="nickname">Nickname</label>
+      <input type="text" id="nickname" v-model="nickname" />
+      <button @click="setNickame">Access game</button>
     </div>
   </div>
 </template>
@@ -19,6 +25,8 @@ export default {
   data() {
     return {
       game: this.$store.state.activeGame.activeGame,
+      showNicknameSetter: false,
+      nickname: null,
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -32,10 +40,25 @@ export default {
         next()
       })
   },
+  beforeRouteLeave(to, from, next) {
+    this.$socket.client.emit('leaveRoom', this.$store.state.activeGame.activeGame._id, this.$store.state.players.me)
+    next()
+  },
   created() {
     if (store.state.activeGame.activeGame.online) {
-      this.$socket.client.emit('joinRoom', this.$store.state.activeGame.activeGame._id)
+      if (!store.state.players.me || !store.state.players.me.nickname) {
+        this.showNicknameSetter = true
+      } else {
+        this.$socket.client.emit('joinRoom', this.$store.state.activeGame.activeGame._id, this.$store.state.players.me)
+      }
     }
+  },
+  methods: {
+    setNickame: function() {
+      store.dispatch('setSelfNickname', this.nickname)
+      this.showNicknameSetter = false
+      this.$socket.client.emit('joinRoom', this.$store.state.activeGame.activeGame._id, this.$store.state.players.me)
+    },
   },
 }
 </script>

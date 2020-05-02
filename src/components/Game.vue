@@ -4,7 +4,7 @@
       <router-link to="/">Go back home</router-link>
       <Grid v-if="game && game.grid" />
       <div v-if="!game">Game not found</div>
-      <Players />
+      <Players v-if="game.online === true" />
     </div>
     <div v-if="showNicknameSetter === true">
       <label for="nickname">Nickname</label>

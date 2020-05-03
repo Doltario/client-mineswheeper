@@ -23,7 +23,13 @@ export default {
     },
   },
   created() {
-    window.addEventListener('mousemove', this.updateCoordinates)
+    let suspended = false
+    window.addEventListener('mousemove', (event) => {
+      if (suspended) return
+      suspended = true
+      this.updateCoordinates(event)
+      setTimeout(() => (suspended = false), 200)
+    })
   },
 }
 </script>
@@ -37,6 +43,7 @@ export default {
   .player-cursor-container {
     position: absolute;
     pointer-events: none;
+    transition: all .2s;
 
     .cursor {
       display: block;

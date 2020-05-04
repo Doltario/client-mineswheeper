@@ -1,14 +1,119 @@
+// NOTE: Fonts in index.html link tag:
+//		Fredoka: Regular 400
+//		Comfortaa: Medium 500
+
+// Reset
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Comfortaa', sans-serif;
+  color: $default-text-color;
+}
+
+html {
+  background-color: $near-white;
+  font-size: 62.5%;
+  overflow-x: hidden;
+}
+
+body {
+  max-width: $site-container-width;
+  margin: 0 auto;
+  @include font-size(16, 16, 16);
+  @media (min-width: #{$site-container-width}) {
+    border-left: 1px solid $light-grey;
+    border-right: 1px solid $light-grey;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Fredoka One";
+}
+
+h1 {
+	@include font-size(46);
+	color: $light-green;
+}
+
+h2 {
+	@include font-size(38);
+	color: $green;
+}
+
+h3 {
+	@include font-size(24);
+	color: $dark-blue;
+}
+
+img {
+  display: block; // removes white space
+  object-fit: cover;
+  width: 100%;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  @include link-style($green);
+}
+
+// Display
+.hide-xs {
+  @include smartphone {
+    display: none !important;
+  }
+}
+
+.hide-md {
+  @include tablet {
+    display: none !important;
+  }
+}
+
+.hide-lg {
+  @include desktop {
+    display: none !important;
+  }
+}
+
+// Structure
+.container {
+  width: 100%;
+  padding: 0 $spacing-basis * 2;
+}
+
+// style
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
 }
 
 pre {
-	padding: 10px 15px;
-	font-size: inherit;
-	color: inherit;
-	white-space: pre-wrap;
-	background-color: #fafafa;
-	border-radius: 3px;
-	border: 1px solid #ccc;
-	display: inline-flex;
+  padding: 10px 15px;
+  font-size: inherit;
+  color: inherit;
+  white-space: pre-wrap;
+  background-color: #fafafa;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  display: inline-flex;
 }

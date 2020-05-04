@@ -2,6 +2,7 @@
   <!-- A template element accept only ONE root container == One div must contain everything -->
   <div>
     <div>
+      <h1>Minesweeper</h1>
       <router-link to="/game/new">New game</router-link>
       <div>TODO: join</div>
     </div>

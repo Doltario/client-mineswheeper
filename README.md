@@ -41,6 +41,7 @@ Project should be launch at http://localhost:8080
 - Handle deconnection better (If this.\$socket.disconnected === true, alert user and display a reconnection button)
 - Implement https://www.npmjs.com/package/vue-notification to inform users about people joining, leaving, etc
 - Rate of bombs on game creation
+- End of game: display if already flagged boxes were right or not
 
 **ROADMAP**:
 

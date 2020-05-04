@@ -5,5 +5,16 @@ module.exports = {
     config.resolve.alias.set('@services', path.resolve(__dirname, 'src', 'services'))
     config.resolve.alias.set('@utils', path.resolve(__dirname, 'src', 'utils'))
     config.resolve.alias.set('@store', path.resolve(__dirname, 'src', 'store'))
+    config.resolve.alias.set('@styles', path.resolve(__dirname, 'src', 'styles'))
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `
+          @import "@styles/_vars.scss";
+          @import "@styles/_mixins.scss";
+        `
+      }
+    }
   }
 }

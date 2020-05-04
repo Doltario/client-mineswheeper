@@ -1,3 +1,27 @@
 #homeContainer {
-  
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+
+    .create-button {
+      @include no-link-style;
+    }
+
+    .create-button,
+    .join-button {
+      @include default-button;
+      font-family: 'Fredoka One';
+      background-color: $light-green;
+      color: $dark-blue;
+      cursor: pointer;
+      padding-left: $spacing-basis * 2 !important;
+      padding-right: $spacing-basis * 2 !important;
+      min-width: 15vw;
+    }
+  }
 }

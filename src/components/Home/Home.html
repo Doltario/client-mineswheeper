@@ -1,5 +1,15 @@
-<div id="homeContainer">
-  <h1>Minesweeper</h1>
-  <router-link to="/game/new">New game</router-link>
-  <div>TODO: join</div>
+<div id="homeContainer" class="container">
+  <div class="title-container">
+    <h1 class="main-title text-center mb-2">Minesweeper</h1>
+    <p class="subtitle text-center">Ever dream about playing minesweeper with friends ? No ? Uh, well… Now you can anyway.</p>
+  </div>
+  <div class="buttons-container">
+
+    <router-link to="/game/new" class="create-button text-center mr-2">Create game</router-link>
+
+    <div class="join-button text-center">
+      Join game
+    </div>
+  </div>
+  <span class="spacer"></span>
 </div>

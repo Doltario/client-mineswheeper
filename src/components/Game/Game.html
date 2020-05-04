@@ -1,0 +1,13 @@
+<div id="GameContainer">
+  <div v-if="showNicknameSetter === false">
+    <router-link to="/">Go back home</router-link>
+    <Grid v-if="game && game.grid" />
+    <div v-if="!game">Game not found</div>
+    <Players v-if="game.online === true" />
+  </div>
+  <div v-if="showNicknameSetter === true">
+    <label for="nickname">Nickname</label>
+    <input type="text" id="nickname" v-model="nickname" />
+    <button @click="setNickame">Access game</button>
+  </div>
+</div>

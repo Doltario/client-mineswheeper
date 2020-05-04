@@ -18,15 +18,18 @@
       </div>
       <div>
         <div>
-          <input type="radio" id="online" name="online" v-model="online" :value="true" />
-          <label for="online">online</label>
-        </div>
-        <div>
           <input type="radio" id="solo" name="online" v-model="online" :value="false" />
           <label for="solo">solo</label>
         </div>
+        <div>
+          <input type="radio" id="online" name="online" v-model="online" :value="true" />
+          <label for="online">online</label>
+        </div>
       </div>
-
+      <div v-if="online === true">
+        <label for="nickname">Nickname</label>
+        <input type="text" id="nickname" v-model="nickname" />
+      </div>
       <button @click="createGame">Create Game</button>
     </div>
   </div>
@@ -40,14 +43,15 @@ export default {
       height: 10,
       bombsNumber: 20,
       online: false,
+      nickname: 'Lama intrépide',
     }
   },
   methods: {
     createGame: function() {
-      const { width, height, bombsNumber, online } = this
+      const { width, height, bombsNumber, online, nickname } = this
 
       this.$store
-        .dispatch('createGame', { width, height, bombsNumber, online })
+        .dispatch('createGame', { width, height, bombsNumber, online, nickname })
         .then((createdGame) => {
           this.$router.push({ name: 'game', params: { gameId: createdGame._id } })
         })

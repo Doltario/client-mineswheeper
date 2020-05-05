@@ -1,18 +1,18 @@
 <div id="newGameContainer">
-  <router-link to="/">Go back home</router-link>
-  <h1>New Game</h1>
-  <div>
+  <Navigation />
+  <div class="nav-avoider container">
+    <h1>New Game</h1>
     <div>
       <label for="width">Grid width</label>
-      <input type="text" id="width" v-model="width" />
+      <input type="number" id="width" v-model="width" />
     </div>
     <div>
       <label for="height">Grid height</label>
-      <input type="text" id="height" v-model="height" />
+      <input type="number" id="height" v-model="height" />
     </div>
     <div>
       <label for="bombs-number">Bombs number</label>
-      <input type="text" id="bombs-number" v-model="bombsNumber" />
+      <input type="number" id="bombs-number" v-model="bombsNumber" />
     </div>
     <div>
       <div>

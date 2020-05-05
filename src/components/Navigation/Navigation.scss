@@ -1,0 +1,12 @@
+#navigationContainer {
+  position: fixed;
+  width: 100%;
+  height: $desktop-nav-height;
+  background-color: $light-green;
+  display: flex;
+  align-items: center;
+  
+  .home-link {
+    @include no-link-style;
+  }
+}

@@ -1,3 +1,95 @@
-#newGameContainer {
-  
+$arrow-width: 2px;
+$arrow-length: 16px;
+
+#newGameContainer {
+  height: 100%;
+
+  #newGameContent {
+    .difficulty-selection-container {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .bgc-easy {
+        background-color: lighten($color: $light-green, $amount: 14);
+      }
+      .bgc-intermediate {
+        background-color: lighten($color: $light-green, $amount: 6);
+      }
+      .bgc-hard {
+        background-color: $light-green;
+      }
+      .bgc-custom {
+        background-color: darken($color: $light-green, $amount: 22);
+      }
+      .difficulty-container {
+        // background-color: yellow;
+        width: 30%;
+
+        .difficulty-item {
+          position: relative;
+          height: $spacing-basis * 10;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          &.selected {
+            &:before {
+              content: '';
+              position: absolute;
+              width: $arrow-length;
+              height: $arrow-width;
+              border-radius: 2px 0 0 2px;
+              top: 50%;
+              right: $spacing-basis * 2;
+              transform-origin: calc(100% - #{$arrow-width} / 2) 50%;
+              transform: translate3d(0, -50%, 0) rotate(-45deg);
+              display: block;
+              background-color: $near-black;
+            }
+            &:after {
+              content: '';
+              position: absolute;
+              width: $arrow-length;
+              height: $arrow-width;
+              border-radius: 2px 0 0 2px;
+              top: 50%;
+              right: $spacing-basis * 2;
+              transform-origin: calc(100% - #{$arrow-width} / 2) 50%;
+              transform: translate3d(0, -50%, 0) rotate(45deg);
+              display: block;
+              background-color: $dark-blue;
+            }
+          }
+        }
+      }
+
+      .params-container {
+        width: 30%;
+
+        .params-item {
+          display: flex;
+          flex-direction: column;
+          height: $spacing-basis * 10;
+
+          input[type='number'] {
+            @include font-size(15);
+          }
+        }
+      }
+    }
+    .bottom-container {
+      input[type='text'] {
+        @include font-size(13);
+      }
+      .create-button {
+        @include default-button;
+        display: inline-block;
+        background-color: $light-green;
+        border-radius: $default-border-radius !important;
+        cursor: pointer;
+      }
+    }
+  }
 }

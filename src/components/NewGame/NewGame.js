@@ -1,8 +1,17 @@
 import Navigation from '@components/Navigation/Navigation.vue'
+import { ToggleButton } from 'vue-js-toggle-button'
+
+const difficultiesMap = {
+  EASY: 'easy',
+  INTERMEDIATE: 'intermediate',
+  HARD: 'hard',
+  CUSTOM: 'custom',
+}
 
 export default {
   components: {
     Navigation,
+    ToggleButton,
   },
   data() {
     return {
@@ -11,7 +20,41 @@ export default {
       bombsNumber: 20,
       online: false,
       nickname: 'Lama intrépide',
+      selectedDifficulty: {},
+      difficulties: [
+        {
+          id: difficultiesMap.EASY,
+          label: 'Easy',
+          width: 9,
+          height: 9,
+          bombsNumber: 10,
+        },
+        {
+          id: difficultiesMap.INTERMEDIATE,
+          label: 'Intermediate',
+          width: 16,
+          height: 16,
+          bombsNumber: 40,
+        },
+        {
+          id: difficultiesMap.HARD,
+          label: 'Hard',
+          width: 16,
+          height: 30,
+          bombsNumber: 99,
+        },
+        {
+          id: difficultiesMap.CUSTOM,
+          label: 'Custom',
+          width: 20,
+          height: 30,
+          bombsNumber: 145,
+        },
+      ],
     }
+  },
+  created() {
+    this.selectDifficulty(this.difficulties[0])
   },
   methods: {
     createGame: function() {
@@ -25,6 +68,14 @@ export default {
         .catch((error) => {
           console.error('Cannot create game', error)
         })
+    },
+    selectDifficulty: function(difficulty) {
+      if (!difficulty.id || !difficultiesMap[difficulty.id.toUpperCase()]) return
+      this.selectedDifficulty = difficulty
+      this.width = this.selectedDifficulty.width
+      this.height = this.selectedDifficulty.height
+      this.height = this.selectedDifficulty.height
+      this.bombsNumber = this.selectedDifficulty.bombsNumber
     },
   },
 }

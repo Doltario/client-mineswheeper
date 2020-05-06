@@ -1,33 +1,41 @@
 <div id="newGameContainer">
   <Navigation />
-  <div class="nav-avoider container">
-    <h1>New Game</h1>
-    <div>
-      <label for="width">Grid width</label>
-      <input type="number" id="width" v-model="width" />
-    </div>
-    <div>
-      <label for="height">Grid height</label>
-      <input type="number" id="height" v-model="height" />
-    </div>
-    <div>
-      <label for="bombs-number">Bombs number</label>
-      <input type="number" id="bombs-number" v-model="bombsNumber" />
-    </div>
-    <div>
-      <div>
-        <input type="radio" id="solo" name="online" v-model="online" :value="false" />
-        <label for="solo">solo</label>
+  <div id="newGameContent" class="nav-avoider container">
+    <h1 class="text-center smaller-h1 my-4">Choose your difficulty</h1>
+
+    <div class="difficulty-selection-container">
+      <div class="difficulty-container">
+        <div v-for="difficulty in difficulties" @click="selectDifficulty(difficulty)" :class="'difficulty-item px-4 bgc-' + difficulty.id + (selectedDifficulty.id === difficulty.id ? ' selected' : '')">
+          {{ difficulty.label }}
+        </div>
       </div>
-      <div>
-        <input type="radio" id="online" name="online" v-model="online" :value="true" />
-        <label for="online">online</label>
+      <div class="params-container p-4">
+        <div class="params-item">
+          <label for="width">Grid width</label>
+          <input type="number" id="width" v-model="width" />
+        </div>
+        <div class="params-item">
+          <label for="height">Grid height</label>
+          <input type="number" id="height" v-model="height" />
+        </div>
+        <div class="params-item">
+          <label for="bombs-number">Amount of bombs</label>
+          <input type="number" id="bombs-number" v-model="bombsNumber" />
+        </div>
       </div>
     </div>
-    <div v-if="online === true">
-      <label for="nickname">Nickname</label>
-      <input type="text" id="nickname" v-model="nickname" />
+    <div class="bottom-container text-center pt-3">
+      <div class="pb-3">
+        <toggle-button v-model="online" :color="{checked: '#028E8A', unchecked: '#F74B55'}" />
+        <span class="ml-1">online</span>
+      </div>
+      <transition name="sliding-fade">
+        <div class="pb-3" v-if="online === true">
+          <label for="nickname" class="mr-2">Nickname</label>
+          <input type="text" id="nickname" v-model="nickname" class="p-2" />
+        </div>
+      </transition>
+      <div class="create-button" @click="createGame">Start</div>
     </div>
-    <button @click="createGame">Create Game</button>
   </div>
 </div>

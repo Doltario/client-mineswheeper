@@ -92,6 +92,14 @@ input[type='text'] {
   }
 }
 
+input[type='number'] {
+  @include font-size(15);
+}
+
+input[type='text'] {
+  @include font-size(13);
+}
+
 // Display
 .hide-xs {
   @include smartphone {

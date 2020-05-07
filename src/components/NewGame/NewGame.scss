@@ -69,23 +69,16 @@ $arrow-length: 16px;
         width: 30%;
 
         .params-item {
+          // felix@TODO: globalize that ( already duplicated )
           display: flex;
           flex-direction: column;
           height: $spacing-basis * 10;
-
-          input[type='number'] {
-            @include font-size(15);
-          }
         }
       }
     }
     .bottom-container {
-      input[type='text'] {
-        @include font-size(13);
-      }
       .create-button {
         @include default-button;
-        display: inline-block;
         background-color: $light-green;
         border-radius: $default-border-radius !important;
         cursor: pointer;

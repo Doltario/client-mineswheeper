@@ -19,6 +19,7 @@
 
 @mixin default-button {
   & {
+    display: inline-block;
     border-radius: $default-border-radius * 2;
     padding: $spacing-basis * 2 $spacing-basis * 4;
     margin-bottom: $spacing-basis; // NOTE: To let a bit space for the shadow
@@ -26,12 +27,15 @@
 }
 
 @mixin link-style($color) {
-  &, &:visited, &:focus, &:active {
-    transition: color .3s;
-    color: $color!important;
+  &,
+  &:visited,
+  &:focus,
+  &:active {
+    transition: color 0.3s;
+    color: $color !important;
     text-decoration: none;
   }
-  
+
   &:hover {
     color: darken($color, 10%);
     text-decoration: underline;
@@ -39,12 +43,15 @@
 }
 
 @mixin no-link-style() {
-  &, &:visited, &:focus, &:active {
+  &,
+  &:visited,
+  &:focus,
+  &:active {
     transition: unset;
-    color: inherit!important;
+    color: inherit !important;
     text-decoration: none;
   }
-  
+
   &:hover {
     text-decoration: none;
   }
@@ -52,11 +59,7 @@
 
 /* It will adapt font size according to the screen type dynamically. It can also be set manually.  */
 /* usage: @include font-size(mobilePx, tabletPx?, desktopPx?)  */
-@mixin font-size(
-  $pxValueXs,
-  $pxValueMd: $pxValueXs * 1.1,
-  $pxValueLg: $pxValueXs * 1.2
-) {
+@mixin font-size($pxValueXs, $pxValueMd: $pxValueXs * 1.1, $pxValueLg: $pxValueXs * 1.2) {
   @if ($pxValueXs < $minimumFontSize) {
     $pxValueXs: $pxValueLg;
   }

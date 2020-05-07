@@ -1,16 +1,18 @@
-<div id="gridContainer">
-  <div>
+<div id="gridContainer" :style="`width: ${20 * $store.state.activeGame.activeGame.grid.width}px`">
+  <div class="grid-header pb-1">
     {{ bombsLeft }}
-    <span v-if="$store.state.activeGame.activeGame.won === true">Win !</span>
+    <span @click="resetGame()" v-if="$store.state.activeGame.activeGame.won === true">:)</span>
+    <span @click="resetGame()" v-if="$store.state.activeGame.activeGame.won === false">:(</span>
     <span @click="resetGame()" v-if="$store.state.activeGame.activeGame.won === false">Try again</span>
+    <span @click="resetGame()" v-if="$store.state.activeGame.activeGame.won === true"> You win !</span>
   </div>
-  <div class="grid-content" :style="`width: ${20 * $store.state.activeGame.activeGame.grid.width}px`">
+  <div class="grid-content">
     <div v-for="gridBox in $store.state.activeGame.activeGame.grid.boxes" v-bind:key="gridBox.index" class="box" @click="reveal(gridBox.index)" @contextmenu.prevent="toggleFlag(gridBox.index)">
       <div v-if="gridBox.isRevealed && gridBox.hasBomb === true && gridBox.isFlagged === false" class="bomb">
-        T
+        <img src="@assets/mine.svg" />
       </div>
       <div v-if="gridBox.isFlagged === true" class="flagged">
-        🇫🇷
+        <img src="@assets/flag.svg" />
       </div>
       <div v-if="gridBox.isRevealed && gridBox.hasBomb === false && gridBox.isFlagged === false" class="no-bomb">
         {{ nearBombs(gridBox) }}

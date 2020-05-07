@@ -1,9 +1,11 @@
+import Navigation from '@components/Navigation/Navigation.vue'
 import Grid from '@components/Grid/Grid.vue'
 import Players from '@components/Players/Players.vue'
 import store from '@store' // NOTE: Imported to use it in beforeRouteEnter
 
 export default {
   components: {
+    Navigation,
     Grid,
     Players,
   },

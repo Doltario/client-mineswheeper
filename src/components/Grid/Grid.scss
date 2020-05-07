@@ -1,6 +1,26 @@
+$box-size: 20px;
+$box-size-number: 20;
+
+@function sqrt($r) {
+  $x0: 1;
+  $x1: $x0;
+
+  @for $i from 1 through 10 {
+    $x1: $x0 - ($x0 * $x0 - abs($r)) / (2 * $x0);
+    $x0: $x1;
+  }
+
+  @return $x1;
+}
+
 #gridContainer {
   width: 100%;
   height: 100%;
+
+  .grid-header {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .grid-content {
     width: 100%;
@@ -9,10 +29,10 @@
     flex-wrap: wrap;
 
     .box {
-      height: 20px;
-      width: 20px;
-      background-color: lightgrey;
-      border: 1px solid black;
+      height: $box-size;
+      width: $box-size;
+      background-color: $light-green;
+      border: 1px solid $dark-blue;
       display: flex;
       justify-content: center;
       align-content: center;
@@ -21,19 +41,38 @@
     }
 
     .no-bomb {
-      background-color: green;
+      background-color: $green;
       width: 100%;
       text-align: center;
     }
 
     .bomb {
-      background-color: red;
+      position: relative;
+      background-color: $red;
       width: 100%;
       text-align: center;
-    }
 
+      .wrong-flag:before {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: #{$box-size-number * sqrt(2) - 2 + 'px'};
+        height: 2px;
+        background-color: blue;
+        transform-origin: 1px 0;
+        transform: rotate(45deg);
+      }
+    }
     .flagged {
-      background-color: orange;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: unset;
+        padding: 2px;
+      }
+
       width: 100%;
       text-align: center;
     }

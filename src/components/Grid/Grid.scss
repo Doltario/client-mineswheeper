@@ -1,17 +1,4 @@
 $box-size: 20px;
-$box-size-number: 20;
-
-@function sqrt($r) {
-  $x0: 1;
-  $x1: $x0;
-
-  @for $i from 1 through 10 {
-    $x1: $x0 - ($x0 * $x0 - abs($r)) / (2 * $x0);
-    $x0: $x1;
-  }
-
-  @return $x1;
-}
 
 #gridContainer {
   width: 100%;
@@ -52,17 +39,22 @@ $box-size-number: 20;
       width: 100%;
       text-align: center;
 
-      .wrong-flag:before {
+      .wrong-flag:before,
+      .wrong-flag:after {
         content: '';
         position: absolute;
         display: block;
-        top: 0;
+        top: 50%;
         left: 0;
-        width: #{$box-size-number * sqrt(2) - 2 + 'px'};
+        width: 100%;
         height: 2px;
-        background-color: blue;
-        transform-origin: 1px 0;
-        transform: rotate(45deg);
+        background-color: $red;
+      }
+      .wrong-flag:before {
+        transform: translate3d(0, -50%, 0) rotate(45deg);
+      }
+      .wrong-flag:after {
+        transform: translate3d(0, -50%, 0) rotate(-45deg);
       }
     }
     .flagged {

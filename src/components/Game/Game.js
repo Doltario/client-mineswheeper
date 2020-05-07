@@ -2,6 +2,7 @@ import Navigation from '@components/Navigation/Navigation.vue'
 import Grid from '@components/Grid/Grid.vue'
 import Players from '@components/Players/Players.vue'
 import store from '@store' // NOTE: Imported to use it in beforeRouteEnter
+import { generateRandomName } from '@utils/animalNames'
 
 export default {
   components: {
@@ -13,7 +14,7 @@ export default {
     return {
       game: this.$store.state.activeGame.activeGame,
       showNicknameSetter: false,
-      nickname: null,
+      nickname: generateRandomName(),
     }
   },
   beforeRouteEnter(to, from, next) {

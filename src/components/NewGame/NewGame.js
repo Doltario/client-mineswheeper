@@ -1,5 +1,6 @@
 import Navigation from '@components/Navigation/Navigation.vue'
 import { ToggleButton } from 'vue-js-toggle-button'
+import { generateRandomName } from '@utils/animalNames'
 
 const difficultiesMap = {
   EASY: 'easy',
@@ -19,7 +20,7 @@ export default {
       height: 10,
       bombsNumber: 20,
       online: false,
-      nickname: 'Lama intrépide',
+      nickname: generateRandomName(),
       selectedDifficulty: {},
       difficulties: [
         {

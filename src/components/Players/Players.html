@@ -1,13 +1,19 @@
 <div id="playersContainer">
-  Connected players:
-  <ul>
-    <li :key="player.socketId" v-for="player in $store.state.players.others">
-      {{ player.nickname }}
-      <span v-if="player.socketId === $store.state.players.me.socketId">(You)</span>
-      <div v-if="player.socketId !== $store.state.players.me.socketId" class="player-cursor-container" :style="{ top: player.position.y + 'px', left: player.position.x + 'px' }">
-        <span class="cursor"></span>
-        <span class="name">{{ player.nickname }}</span>
-      </div>
-    </li>
-  </ul>
+  <div class="cursors">
+    <div v-for="player in $store.state.players.others" v-if="player.socketId !== $store.state.players.me.socketId" class="player-cursor-container" :style="{ top: player.position.y + 'px', left: player.position.x + 'px' }">
+      <span class="cursor"></span>
+      <span class="name">{{ player.nickname }}</span>
+    </div>
+  </div>
+  <div class="players-list">
+    <div class="mb-1">
+      Connected players:
+    </div>
+    <ul>
+      <li :key="player.socketId" v-for="player in $store.state.players.others" class="pl-2">
+        {{ player.nickname }}
+        <span v-if="player.socketId === $store.state.players.me.socketId">(You)</span>
+      </li>
+    </ul>
+  </div>
 </div>

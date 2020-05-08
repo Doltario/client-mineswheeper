@@ -1,0 +1,19 @@
+<div id="GameContainer">
+  <Navigation />
+  <div id="gameContent" class="nav-avoider container">
+    <div v-if="showNicknameSetter === false">
+      <Grid v-if="game && game.grid" />
+      <div v-if="!game">Game not found</div>
+      <Players v-if="game.online === true" />
+    </div>
+    <div class="nickname-screen" v-if="showNicknameSetter === true">
+      <div class="params-item">
+        <label for="nickname">Nickname</label>
+        <input type="text" id="nickname" v-model="nickname" />
+      </div>
+      <div>
+        <div class="join-button" @click="setNickame">Join</div>
+      </div>
+    </div>
+  </div>
+</div>

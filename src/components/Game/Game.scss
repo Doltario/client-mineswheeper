@@ -1,0 +1,32 @@
+#GameContainer {
+  height: 100%;
+  width: 100%;
+
+  #gameContent {
+    height: 100%;
+    width: 100%;
+
+    .nickname-screen {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .params-item {
+        // felix@TODO: globalize that ( already duplicated )
+        display: flex;
+        flex-direction: column;
+        height: $spacing-basis * 10;
+      }
+
+      .join-button {
+        @include default-button;
+        background-color: $light-green;
+        border-radius: $default-border-radius !important;
+        cursor: pointer;
+      }
+    }
+  }
+}

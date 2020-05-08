@@ -1,0 +1,22 @@
+#navigationContainer {
+  position: fixed;
+  width: 100%;
+  height: $desktop-nav-height;
+  background-color: $near-white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+
+  .left-container {
+    .home-link {
+      font-family: 'Fredoka One';
+      @include no-link-style;
+    }
+  }
+  .right-container {
+    a {
+      @include no-link-style;
+    }
+  }
+}

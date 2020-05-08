@@ -1,26 +1,12 @@
-<template>
-  <div>
-    <div v-if="showNicknameSetter === false">
-      <router-link to="/">Go back home</router-link>
-      <Grid v-if="game && game.grid" />
-      <div v-if="!game">Game not found</div>
-      <Players v-if="game.online === true" />
-    </div>
-    <div v-if="showNicknameSetter === true">
-      <label for="nickname">Nickname</label>
-      <input type="text" id="nickname" v-model="nickname" />
-      <button @click="setNickame">Access game</button>
-    </div>
-  </div>
-</template>
-
-<script>
-import Grid from '@components/Grid.vue'
-import Players from '@components/Players.vue'
+import Navigation from '@components/Navigation/Navigation.vue'
+import Grid from '@components/Grid/Grid.vue'
+import Players from '@components/Players/Players.vue'
 import store from '@store' // NOTE: Imported to use it in beforeRouteEnter
+import { generateRandomName } from '@utils/animalNames'
 
 export default {
   components: {
+    Navigation,
     Grid,
     Players,
   },
@@ -28,7 +14,7 @@ export default {
     return {
       game: this.$store.state.activeGame.activeGame,
       showNicknameSetter: false,
-      nickname: null,
+      nickname: generateRandomName(),
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -63,7 +49,3 @@ export default {
     },
   },
 }
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>

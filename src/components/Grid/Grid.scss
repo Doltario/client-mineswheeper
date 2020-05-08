@@ -1,0 +1,71 @@
+$box-size: 20px;
+
+#gridContainer {
+  height: 100%;
+
+  .grid-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .grid-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .box {
+      height: $box-size;
+      width: $box-size;
+      background-color: $light-green;
+      border: 1px solid $dark-blue;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .no-bomb {
+      background-color: $green;
+      width: 100%;
+      text-align: center;
+    }
+
+    .bomb {
+      position: relative;
+      background-color: $red;
+      width: 100%;
+      text-align: center;
+
+      .wrong-flag:before,
+      .wrong-flag:after {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: $red;
+      }
+      .wrong-flag:before {
+        transform: translate3d(0, -50%, 0) rotate(45deg);
+      }
+      .wrong-flag:after {
+        transform: translate3d(0, -50%, 0) rotate(-45deg);
+      }
+    }
+    .flagged {
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: unset;
+        padding: 2px;
+      }
+
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

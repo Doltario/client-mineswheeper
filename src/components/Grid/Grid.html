@@ -15,7 +15,7 @@
         <img src="@assets/mine.svg" />
         <span class="wrong-flag"></span>
       </div>
-      <div v-if="($store.state.activeGame.activeGame.ended === false && gridBox.isFlagged === true) || ($store.state.activeGame.activeGame.ended === true && gridBox.isFlagged === true && gridBox.hasBomb === true)" class="flagged">
+      <div v-if="($store.state.activeGame.activeGame.ended === null && gridBox.isFlagged === true) || ($store.state.activeGame.activeGame.ended === true && gridBox.isFlagged === true && gridBox.hasBomb === true)" class="flagged">
         <img src="@assets/flag.svg" />
       </div>
       <div v-if="gridBox.isRevealed && gridBox.hasBomb === false && gridBox.isFlagged === false" class="no-bomb">

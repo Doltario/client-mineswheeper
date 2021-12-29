@@ -3,6 +3,7 @@
 
   .cursors {
     .player-cursor-container {
+      position: absolute;
       pointer-events: none;
       transition: all 0.2s;
 

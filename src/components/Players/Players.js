@@ -5,12 +5,8 @@ export default {
     },
   },
   created() {
-    let suspended = false
     window.addEventListener('mousemove', (event) => {
-      if (suspended) return
-      suspended = true
-      this.updateCoordinates(event)
-      setTimeout(() => (suspended = false), 200)
+      window.requestAnimationFrame(this.updateCoordinates(event))
     })
   },
 }

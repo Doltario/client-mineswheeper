@@ -6,7 +6,7 @@ export default {
   },
   created() {
     window.addEventListener('mousemove', (event) => {
-      window.requestAnimationFrame(this.updateCoordinates(event))
+      window.requestAnimationFrame(() => this.updateCoordinates(event))
     })
   },
 }
